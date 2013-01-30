@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>Inventory List</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+            </tr>
+            {% for item, quantity in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ quantity }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
