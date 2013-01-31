@@ -48,15 +48,19 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(verbose_name="Timestamp",
                                      auto_now_add=True)
 
-    def __unicode__(self):
+    @property
+    def transaction_code(self):
         if self.delta_balance < 0:
-            code = "INB"
+            return "INB"
         elif self.delta_balance == 0:
-            code = "NIL"
+            return "NIL"
         else:
-            code = "OUT"
-        return "%s | %s | %s | %s@%s" % (code, self.account.name,
-                                         self.item.name, self.delta_quantity,
+            return "OUT"
+
+    def __unicode__(self):
+        return "%s | %s | %s | %s@%s" % (self.transaction_code,
+                                         self.account.name, self.item.name,
+                                         self.delta_quantity,
                                          self.delta_balance)
 
 
