@@ -16,4 +16,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^a/', 'inventory.views.accounts', name='accounts'),
     url(r'^i/', 'inventory.views.inventory_list', name='inventory_list'),
+    url(r'^p/', 'inventory.views.purchasers', name='purchasers'),
 )

@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>Purchasers List</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Inventory Purchased</th>
+                <th>Income Generated</th>
+            </tr>
+            {% for purchaser, purchased, generated in purchasers %}
+            <tr>
+                <td>{{ purchaser.name }}</td>
+                <td>{{ purchased }}</td>
+                <td>{{ generated }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
