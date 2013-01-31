@@ -1,21 +1,25 @@
-<html>
-    <head>
-        <title>Purchasers List</title>
-    </head>
-    <body>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Inventory Purchased</th>
-                <th>Income Generated</th>
-            </tr>
-            {% for purchaser, purchased, generated in purchasers %}
-            <tr>
-                <td>{{ purchaser.name }}</td>
-                <td>{{ purchased }}</td>
-                <td>{{ generated }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block title_tag %}Purchasers List{% endblock %}
+{% block content %}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Inventory Purchased</th>
+        <th>Income Generated</th>
+    </tr>
+    {% for purchaser, purchased, generated in purchasers %}
+    <tr>
+        <td>{{ purchaser.name }}</td>
+        <td>{{ purchased }}</td>
+        <td>{{ generated }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}
+{% block page_scripts %}
+<script type="text/javascript">
+$("document").ready(function (){
+    $("table").table();
+});
+</script>
+{% endblock %}
