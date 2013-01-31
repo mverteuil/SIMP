@@ -37,13 +37,16 @@ class Transaction(models.Model):
                                 null=True)
     purchaser = models.ForeignKey("Purchaser",
                                   related_name="transactions",
-                                  null=True)
+                                  null=True,
+                                  blank=True)
     delta_quantity = models.FloatField(verbose_name="Delta Quantity",
                                        default=0.0)
     delta_balance = models.DecimalField(verbose_name="Delta Balance",
                                         max_digits=8,
                                         decimal_places=2,
                                         default=D('0.00'))
+    timestamp = models.DateTimeField(verbose_name="Timestamp",
+                                     auto_now_add=True)
 
     def __unicode__(self):
         if self.delta_balance < 0:
