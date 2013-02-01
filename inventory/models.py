@@ -37,6 +37,18 @@ class InventoryItem(models.Model):
     def __unicode__(self):
         return self.name
 
+    def calculate_quantity(self):
+        """
+            Calculates the current quantity by summing transactions
+
+            Returns
+            -------
+            quantity : `float`
+                The calculated quantity
+        """
+        return sum([t.delta_quantity for t in
+                    Transaction.objects.filter(item=self)])
+
 
 class Account(models.Model):
     """
@@ -63,10 +75,24 @@ class Account(models.Model):
     def __unicode__(self):
         return self.name
 
+    def calculate_balance(self):
+        """
+            Calculates the current balance by summing transactions with
+            the initial balance.
+
+            Returns
+            -------
+            balance : :class:`decimal.Decimal`
+                The calculated balance
+        """
+        balance = sum([t.delta_balance for t in
+                       Transaction.objects.filter(account=self)])
+        return self.initial_balance + balance
+
 
 class Transaction(models.Model):
     """
-        represents a transaction and tracks the changes in quantities and 
+        Represents a transaction and tracks the changes in quantities and
         balance over time, storing the name of the purchaser too, if this is an
         inventory-outbound transaction.
 
@@ -135,3 +161,31 @@ class Purchaser(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def calculate_income(self):
+        """
+            Sums the transaction balances where this purchaser was the buyer
+
+            Returns
+            -------
+            calculated_income : :class:`decimal.Decimal`
+                The sum of transaction.delta_balance for which this purchaser
+                was the buyer
+        """
+        return sum([t.delta_balance for t in
+                    Transaction.objects.filter(purchaser=self)
+                    if t.delta_balance > 0])
+
+    def calculate_consumption(self):
+        """
+            Sums the transaction quantities where this purchaser was the buyer
+
+            Returns
+            -------
+            calculated_consumption : `float`
+                The sume of transaction.delta_quantity for which this purchaser
+                was the buyer
+        """
+        return abs(sum([t.delta_quantity for t in
+                        Transaction.objects.filter(purchaser=self)
+                        if t.delta_quantity < 0]))

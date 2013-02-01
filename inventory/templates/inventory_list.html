@@ -7,10 +7,10 @@
         <th>Name</th>
         <th>Quantity</th>
     </tr>
-    {% for item, quantity in items %}
+    {% for item in items %}
     <tr>
         <td>{{ item.name }}</td>
-        <td>{{ quantity }}</td>
+        <td>{{ item.calculate_quantity }}</td>
     </tr>
     {% endfor %}
 </table>

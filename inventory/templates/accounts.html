@@ -7,10 +7,10 @@
         <th>Name</th>
         <th>Balance</th>
     </tr>
-    {% for account, balance in accounts %}
+    {% for account in accounts %}
     <tr>
         <td>{{ account.name }}</td>
-        <td>{{ balance }}</td>
+        <td>{{ account.calculate_balance }}</td>
     </tr>
     {% endfor %}
 </table>

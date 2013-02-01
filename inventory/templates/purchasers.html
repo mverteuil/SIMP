@@ -5,14 +5,14 @@
 <table class="basetable">
     <tr>
         <th>Name</th>
-        <th>Inventory Purchased</th>
+        <th>Inventory Consumed</th>
         <th>Income Generated</th>
     </tr>
-    {% for purchaser, purchased, generated in purchasers %}
+    {% for purchaser in purchasers %}
     <tr>
         <td>{{ purchaser.name }}</td>
-        <td class="number">{{ purchased }}</td>
-        <td class="number">{{ generated }}</td>
+        <td class="number">{{ purchaser.calculate_consumption }}</td>
+        <td class="number">{{ purchaser.calculate_income }}</td>
     </tr>
     {% endfor %}
 </table>
