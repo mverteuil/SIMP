@@ -1,9 +1,32 @@
+"""
+    :platform: Unix, OS X
+    :synopsis: Django ORMDB Inventory models
+
+    .. moduleauthor:: Matthew de Verteuil <mverteuil@github.com>
+"""
 from decimal import Decimal as D
 
 from django.db import models
 
 
 class InventoryItem(models.Model):
+    """
+        Represents a specific inventory item. For example, an fruit store would
+        probably have entries for "Banana", "Apple", "Grapefruit", etc.
+
+        Parameters
+        ----------
+        name : `string`
+            A human readable name for this item
+        markup_scheme : `string`
+            A format string, with the syntax--
+               `{quantity}@{price}[, {quantity}@{price}, ...]`
+            Used to set up pricing 'tiers', as in the case: *Apples are $1.00
+            each, but we sell 5 Apples for $4.00.* Which would be represented
+            in as::
+                1@1.00,5@4.00
+
+    """
     name = models.CharField(verbose_name="Name",
                             max_length=64,
                             blank=False)
@@ -16,6 +39,19 @@ class InventoryItem(models.Model):
 
 
 class Account(models.Model):
+    """
+        Represents a 'wallet', so to speak. A pool of money used to purchase
+        supplies and receive income. Generally speaking you will probably have
+        only one 'Main' account unless your needs are particularly special.
+
+        Parameters
+        ----------
+        name : `string`
+            A human readable name for this item
+        initial_balance : :class:`decimal.Decimal`
+            The initial cash balance of the account before any transactions
+            have taken place.
+    """
     name = models.CharField(verbose_name="Name",
                             max_length=64,
                             blank=False)
@@ -29,6 +65,26 @@ class Account(models.Model):
 
 
 class Transaction(models.Model):
+    """
+        represents a transaction and tracks the changes in quantities and 
+        balance over time, storing the name of the purchaser too, if this is an
+        inventory-outbound transaction.
+
+        Parameters
+        ----------
+        item : :class:`InventoryItem`
+            The item this transaction concerns
+        account : :class:`Account`
+            Where the money will come from or go
+        purchaser : :class:`Purchaser`
+            Who we're buying from or selling to
+        delta_quantity : `float`
+            Negative quantities for sale, positive for purchase
+        delta_balance : :class:`decimal.Decimal`
+            Negative quantities for purchase, positive for sale
+        timestamp : :class:`datetime.datetime`
+            The time/date of the transaction completion
+    """
     item = models.ForeignKey("InventoryItem",
                              related_name="transactions",
                              null=True)
@@ -65,6 +121,14 @@ class Transaction(models.Model):
 
 
 class Purchaser(models.Model):
+    """
+        Represents a buyer or seller in transactions.
+
+        Parameters
+        ----------
+        name : `string`
+            A human readable name for this item
+    """
     name = models.CharField(verbose_name="Name",
                             max_length=64,
                             blank=False)

@@ -1,8 +1,7 @@
 Inventory
 =========
 
-.. automodule:: inventory.models
-    :members:
-
-.. automodule:: inventory.views
-    :members:
+.. toctree::
+   :maxdepth: 2
+   inventory.models
+   inventory.views
