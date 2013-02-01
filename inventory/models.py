@@ -49,6 +49,28 @@ class InventoryItem(models.Model):
         return sum([t.delta_quantity for t in
                     Transaction.objects.filter(item=self)])
 
+    def calculate_purchased_value_per_unit(self):
+        """
+            Calculates the current determined value per unit based solely on
+            the rates at which this item was acquired.
+
+            For example:
+                Apples were stocked twice, first we acquired 75@50.00, then
+                we acquired 270@150 later. In the first acquisition we have a
+                value/unit rate of 50/75=0.66, in the second the rate is
+                150/270=0.55. So we'll return the mean rate of 0.66+0.55/2=0.61
+
+            Returns
+            -------
+            purchased_value_per_unit : :class:`decimal.Decimal`
+                The mean of calculated cost/unit values where we are
+                the purchaser
+        """
+        vpus = [(abs(t.delta_balance)/D(t.delta_quantity)) for t in
+                Transaction.objects.filter(item=self,
+                                           delta_quantity__gt=0)]
+        return sum(vpus) / len(vpus)
+
 
 class Account(models.Model):
     """
