@@ -6,11 +6,15 @@
     <tr>
         <th>Name</th>
         <th>Quantity</th>
+        <th>Price/Unit (Stock)</th>
+        <th>Price/Unit (Sales)</th>
     </tr>
     {% for item in items %}
     <tr>
         <td>{{ item.name }}</td>
         <td>{{ item.calculate_quantity }}</td>
+        <td>{{ item.calculate_purchased_value_per_unit }}</td>
+        <td>{{ item.calculate_sold_value_per_unit }}</td>
     </tr>
     {% endfor %}
 </table>
