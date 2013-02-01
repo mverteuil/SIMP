@@ -9,8 +9,13 @@ ADMINS = (
 )
 
 PROJECT_PATH = path.abspath(path.join(
-        path.dirname(path.realpath(__file__)),
-        ".."))
+    path.dirname(path.realpath(__file__)),
+    ".."))
+
+DOCS_PATH = path.abspath(path.join(
+    path.dirname(path.realpath(__file__)),
+    "..", "docs", "_build", "html"))
+
 
 MANAGERS = ADMINS
 
@@ -72,14 +77,15 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    DOCS_PATH,
 )
 
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.FileSystemFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -89,7 +95,7 @@ SECRET_KEY = '726d@8+zz_$z67+zxa(&amp;rx#au7_kheexwc8!1n3iwv@l1pb276'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,8 +114,8 @@ ROOT_URLCONF = 'simp.urls'
 WSGI_APPLICATION = 'simp.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
+    # Put strings here, like "/home/html/django_templates" or
+    # "C:/www/django/templates".  Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
 
