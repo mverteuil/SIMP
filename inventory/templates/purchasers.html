@@ -11,8 +11,8 @@
     {% for purchaser in purchasers %}
     <tr>
         <td>{{ purchaser.name }}</td>
-        <td class="number">{{ purchaser.calculate_consumption }}</td>
-        <td class="number">{{ purchaser.calculate_income }}</td>
+        <td class="number">{{ purchaser.calculate_consumption|floatformat:1 }}</td>
+        <td class="number">{{ purchaser.calculate_income|floatformat:2 }}</td>
     </tr>
     {% endfor %}
 </table>

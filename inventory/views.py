@@ -1,3 +1,9 @@
+"""
+    :platform: Unix, OS X
+    :synopsis: Django views for Inventory viewing & editing.
+
+    .. moduleauthor:: Matthew de Verteuil <mverteuil@github.com>
+"""
 from annoying.decorators import render_to
 
 from inventory import models as inventory

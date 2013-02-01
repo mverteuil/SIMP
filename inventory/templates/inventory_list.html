@@ -12,9 +12,9 @@
     {% for item in items %}
     <tr>
         <td>{{ item.name }}</td>
-        <td>{{ item.calculate_quantity }}</td>
-        <td>{{ item.calculate_purchased_value_per_unit }}</td>
-        <td>{{ item.calculate_sold_value_per_unit }}</td>
+        <td class="number">{{ item.calculate_quantity|floatformat:1 }}</td>
+        <td class="number">${{ item.calculate_purchased_value_per_unit|floatformat:2 }}</td>
+        <td class="number">${{ item.calculate_sold_value_per_unit|floatformat:2 }}</td>
     </tr>
     {% endfor %}
 </table>
