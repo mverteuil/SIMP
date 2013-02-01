@@ -22,8 +22,8 @@
     {% block page_styles %}
     {% endblock %}
 </head>
-<body class="{% block body_class %}{% endblock %}">
-<h1>{% block page_heading %}{% endblock %}</h1>
+{% block page_head %}
+{% endblock %}
 <div class="content">
 {% block content %}
 {% endblock %}
