@@ -71,6 +71,26 @@ class InventoryItemTest(BasicSetup, TestCase):
         )
         assert self.item.calculate_purchased_value_per_unit() == 0.625
 
+    def test_calculated_sold_value_per_unit(self):
+        assert self.item.calculate_sold_value_per_unit() == 1
+        # No more inventory, buy some more
+        Transaction.objects.create(
+            item=self.item,
+            account=self.account,
+            purchaser=self.seller,
+            delta_quantity=100,
+            delta_balance=D("-75.00"),
+        )
+        # Second sale
+        Transaction.objects.create(
+            item=self.item,
+            account=self.account,
+            purchaser=self.buyer,
+            delta_quantity=(-60),
+            delta_balance=D("75.00"),
+        )
+        assert self.item.calculate_sold_value_per_unit() == 1.125
+
 
 class PurchaserTest(BasicSetup, TestCase):
     def test_calculated_income(self):
