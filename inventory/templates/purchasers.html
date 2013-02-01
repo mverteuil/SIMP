@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% block title_tag %}Purchasers List{% endblock %}
+{% block title_tag %}Purchasers{% endblock %}
+{% block page_heading %}Purchasers{% endblock %}
 {% block content %}
-<table>
+<table class="basetable">
     <tr>
         <th>Name</th>
         <th>Inventory Purchased</th>
@@ -10,16 +11,9 @@
     {% for purchaser, purchased, generated in purchasers %}
     <tr>
         <td>{{ purchaser.name }}</td>
-        <td>{{ purchased }}</td>
-        <td>{{ generated }}</td>
+        <td class="number">{{ purchased }}</td>
+        <td class="number">{{ generated }}</td>
     </tr>
     {% endfor %}
 </table>
 {% endblock content %}
-{% block page_scripts %}
-<script type="text/javascript">
-$("document").ready(function (){
-    $("table").table();
-});
-</script>
-{% endblock %}

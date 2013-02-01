@@ -1,0 +1,93 @@
+/* Reset
+ * http://meyerweb.com/eric/tools/css/reset/ 
+ * v2.0 | 20110126
+ * -------------------------------------------------------------- */
+
+ html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Default font settings
+ * The font-size percentage is of 16px. (0.75 * 16px = 12px)
+ * -------------------------------------------------------------- */
+html { font-size:100.01%; }
+body {
+  font-size: 86.5%;
+  color: #666;
+  background: #fff;
+  font-family: Georgia, Times New Roman, Times, Serif;
+  line-height:1.5;
+  padding: 1em;
+}
+
+.number { font-family: Monaco, Courier New, Courier; text-align: right !important; }
+
+
+/* Headings
+ * -------------------------------------------------------------- */
+
+h1,h2,h3,h4,h5,h6 { font-weight: bold; color: #333; }
+
+h1 { font-size: 3em; line-height: 1; margin-bottom: 0.5em; }
+h2 { font-size: 2em; margin-bottom: 0.25em; }
+h3 { font-size: 1.5em; line-height: 1; margin-bottom: 1em; }
+h4 { font-size: 1.2em; line-height: 1.25; margin-bottom: 1.25em; }
+h5 { font-size: 1em; font-weight: bold; margin-bottom: 1.5em; }
+h6 { font-size: 1em; font-weight: bold; }
+
+h1 img, h2 img, h3 img,
+h4 img, h5 img, h6 img {
+  margin: 0;
+}
+
+/* Tables
+ * -------------------------------------------------------------- */
+table { margin: 1em; border-collapse: collapse; border: 1px; border-style: solid; border-spacing: 0; width: 80%; }
+.basetable th{font-weight: bold; padding: 12px 8px 5px 8px; font-size: 16px;text-align: center;}
+.basetable td{text-align: center;padding: 12px 8px 12px 8px; border: 1px solid}
+td.long-left{text-align: left;background-color: #ffffff;}
+td.long-right{text-align: right;background-color: #ffffff;}
+td.blue{background-color: #f3f7f8;border-bottom: 1px solid #e9f0f2;}
+td.yellow{background-color: #fff9bd;border-bottom: 1px solid #f2f0b6;border-right: 0px;}
+td:hover, tr:hover { background-color: #fff9bd; }
+th, tfoot td { background: #def3b8; }

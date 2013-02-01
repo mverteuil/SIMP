@@ -13,13 +13,20 @@
     {% endblock %}
     {% block persistent_styles %}
     <link rel="stylesheet"
+          media="screen"
+          href="/static/css/simp.css" />
+    <link rel="stylesheet"
+          media="screen"
           href="/static/css/theme/jquery-ui-1.10.0.custom.min.css" />
     {% endblock %}
     {% block page_styles %}
     {% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
+<h1>{% block page_heading %}{% endblock %}</h1>
+<div class="content">
 {% block content %}
 {% endblock %}
+</div>
 </body>
 </html>

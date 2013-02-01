@@ -1,19 +1,17 @@
-<html>
-    <head>
-        <title>Inventory List</title>
-    </head>
-    <body>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Quantity</th>
-            </tr>
-            {% for item, quantity in items %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ quantity }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block title_tag %}Inventory{% endblock %}
+{% block page_heading %}Inventory{% endblock %}
+{% block content %}
+<table class="basetable">
+    <tr>
+        <th>Name</th>
+        <th>Quantity</th>
+    </tr>
+    {% for item, quantity in items %}
+    <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ quantity }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

@@ -1,19 +1,17 @@
-<html>
-    <head>
-        <title>Accounts</title>
-    </head>
-    <body>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Balance</th>
-            </tr>
-            {% for account, balance in accounts %}
-            <tr>
-                <td>{{ account.name }}</td>
-                <td>{{ balance }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block title_tag %}Accounts{% endblock %}
+{% block page_heading %}Accounts{% endblock %}
+{% block content %}
+<table class="basetable">
+    <tr>
+        <th>Name</th>
+        <th>Balance</th>
+    </tr>
+    {% for account, balance in accounts %}
+    <tr>
+        <td>{{ account.name }}</td>
+        <td>{{ balance }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}
