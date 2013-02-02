@@ -1,4 +1,24 @@
 {% extends "section.html" %}
+{% block page_scripts %}
+<script type="text/javascript"
+        src="/static/js/jquery.sparkline.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".item").each(function(_i, element){
+        var purchased_vpu = parseFloat($(element).find(".purchased").html().replace(/\$/g,''));
+        var sold_vpu = parseFloat($(element).find(".sold").html().replace(/\$/g,''));
+        $(element).find(".chart").sparkline(
+            [purchased_vpu,sold_vpu],
+            {
+                type:'bar',
+                colorMap:['red','blue'],
+                chartRangeMin:0
+            }
+        );
+    });
+});
+</script>
+{% endblock %}
 {% block title_tag %}Inventory{% endblock %}
 {% block page_heading %}Inventory{% endblock %}
 {% block content %}
@@ -6,15 +26,17 @@
     <tr>
         <th>Name</th>
         <th>Quantity</th>
-        <th>Price/Unit (Stock)</th>
-        <th>Price/Unit (Sales)</th>
+        <th>Stock <small>($/unit)</small></th>
+        <th>Sales <small>($/unit)</small></th>
+        <th title="Performance">Perf.</th>
     </tr>
     {% for item in items %}
-    <tr>
+    <tr class="item">
         <td>{{ item.name }}</td>
-        <td class="number">{{ item.calculate_quantity|floatformat:1 }}</td>
-        <td class="number">${{ item.calculate_purchased_value_per_unit|floatformat:2 }}</td>
-        <td class="number">${{ item.calculate_sold_value_per_unit|floatformat:2 }}</td>
+        <td class="number quantity">{{ item.calculate_quantity|floatformat:1 }}</td>
+        <td class="number purchased">${{ item.calculate_purchased_value_per_unit|floatformat:2 }}</td>
+        <td class="number sold">${{ item.calculate_sold_value_per_unit|floatformat:2 }}</td>
+        <td class="chart performance">&nbsp;</td>
     </tr>
     {% endfor %}
 </table>

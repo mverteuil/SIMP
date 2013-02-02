@@ -89,6 +89,8 @@ td.long-left{text-align: left;background-color: #ffffff;}
 td.long-right{text-align: right;background-color: #ffffff;}
 td.blue{background-color: #f3f7f8;border-bottom: 1px solid #e9f0f2;}
 td.yellow{background-color: #fff9bd;border-bottom: 1px solid #f2f0b6;border-right: 0px;}
-td.number{width:12em;}
+td.number{width:10em;}
+td.chart{width:8em;}
 td:hover, tr:hover { background-color: #fff9bd; }
 th, tfoot td { background: #def3b8; }
+th small { font-size: 75%; }
