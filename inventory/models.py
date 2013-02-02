@@ -69,7 +69,7 @@ class InventoryItem(models.Model):
         vpus = [(abs(t.delta_balance) / D(t.delta_quantity)) for t in
                 Transaction.objects.filter(item=self,
                                            delta_quantity__gt=0)]
-        return sum(vpus) / len(vpus)
+        return sum(vpus) / (max(len(vpus), 1))
 
     def calculate_sold_value_per_unit(self):
         """
@@ -91,7 +91,7 @@ class InventoryItem(models.Model):
         vpus = [(t.delta_balance / D(abs(t.delta_quantity))) for t in
                 Transaction.objects.filter(item=self,
                                            delta_quantity__lt=0)]
-        return sum(vpus) / (max(len(vpus),1))
+        return sum(vpus) / (max(len(vpus), 1))
 
 
 class Account(models.Model):
