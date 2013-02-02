@@ -184,10 +184,12 @@ class Transaction(models.Model):
             return "OUT"
 
     def __unicode__(self):
-        return "%s | %s | %s | %s@%s" % (self.transaction_code,
-                                         self.account.name, self.item.name,
-                                         self.delta_quantity,
-                                         self.delta_balance)
+        return "%s | %s | %s | %s | %s@%s" % (self.timestamp,
+                                              self.transaction_code,
+                                              self.account.name,
+                                              self.item.name,
+                                              self.delta_quantity,
+                                              self.delta_balance)
 
 
 class Purchaser(models.Model):
