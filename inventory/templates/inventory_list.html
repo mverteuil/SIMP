@@ -3,11 +3,40 @@
 <script type="text/javascript"
         src="/static/js/jquery.sparkline.min.js"></script>
 <script type="text/javascript">
+// Set up color array for styling sparkline composite bars
+var colormap = [];
+for (var i=0;i<10;i++) {
+    colormap[i] = ['pink','black'];
+}
 $(document).ready(function() {
     $(".item").each(function(_i, element){
         var purchased_vpu = parseFloat($(element).find(".purchased").html().replace(/\$/g,''));
         var sold_vpu = parseFloat($(element).find(".sold").html().replace(/\$/g,''));
-        $(element).find(".chart").sparkline(
+        var markup_scheme = $(element).data('markup');
+        if (markup_scheme != "") {
+            markup_scheme = markup_scheme.split(",");
+            var split_markup_items = [];
+            // Split up the items so they can be manipulated and reinserted
+            $.each(markup_scheme, function(indx, element){
+                split_markup_items[indx] = element.split('@');
+            });
+            // Re-joinder the items on : and multiply by purchased value per unit
+            $.each(split_markup_items, function(indx, element){
+                element[0] = element[0] * purchased_vpu;
+                markup_scheme[indx] = element.join(":");
+            });
+            $(element).find(".chart.markup").sparkline(
+                markup_scheme,
+                {
+                    type:'bar',
+                    colorMap:colormap,
+                    chartRangeMin:0
+                }
+            );
+        }
+        var purchased_vpu = parseFloat($(element).find(".purchased").html().replace(/\$/g,''));
+        var sold_vpu = parseFloat($(element).find(".sold").html().replace(/\$/g,''));
+        $(element).find(".chart.performance").sparkline(
             [purchased_vpu,sold_vpu],
             {
                 type:'bar',
@@ -28,14 +57,16 @@ $(document).ready(function() {
         <th>Quantity</th>
         <th>Stock <small>($/unit)</small></th>
         <th>Sales <small>($/unit)</small></th>
+        <th>Markup</th>
         <th title="Performance">Perf.</th>
     </tr>
     {% for item in items %}
-    <tr class="item">
+    <tr class="item" data-markup="{{ item.markup_scheme }}">
         <td>{{ item.name }}</td>
         <td class="number quantity">{{ item.calculate_quantity|floatformat:1 }}</td>
         <td class="number purchased">${{ item.calculate_purchased_value_per_unit|floatformat:2 }}</td>
         <td class="number sold">${{ item.calculate_sold_value_per_unit|floatformat:2 }}</td>
+        <td class="chart markup">&nbsp;</td>
         <td class="chart performance">&nbsp;</td>
     </tr>
     {% endfor %}
