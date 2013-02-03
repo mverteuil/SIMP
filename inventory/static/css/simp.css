@@ -94,3 +94,12 @@ td.chart{width:8em;}
 td:hover, tr:hover { background-color: #fff9bd; }
 th, tfoot td { background: #def3b8; }
 th small { font-size: 75%; }
+
+/* Forms
+ * -------------------------------------------------------------- */
+form { width: 25% }
+form p { font-size: 1.3em; }
+form label { display:inline-block; width: 40%; }
+form select, input { font-size: 1em; display:inline-block; width: 50%; text-align: right; }
+button { font-size: 1.3em; margin-right: 1.1em; float: right; clear: right; }
+form ul.errorlist { color: crimson; }
