@@ -14,8 +14,8 @@ def accounts(request):
     return dict(accounts=inventory.Account.objects.all())
 
 
-@render_to('inventory_list.html')
-def inventory_list(request):
+@render_to('inventoryitems.html')
+def inventoryitems(request):
     return dict(items=inventory.InventoryItem.objects.all())
 
 

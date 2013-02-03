@@ -24,6 +24,6 @@ urlpatterns = patterns(
 
     # SIMP URLs
     url(r'^a/', 'inventory.views.accounts', name='accounts'),
-    url(r'^i/', 'inventory.views.inventory_list', name='inventory_list'),
+    url(r'^i/', 'inventory.views.inventoryitems', name='inventoryitems'),
     url(r'^p/', 'inventory.views.purchasers', name='purchasers'),
 )
