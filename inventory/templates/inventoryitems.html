@@ -1,4 +1,28 @@
 {% extends "section.html" %}
+{% block title_tag %}Inventory{% endblock %}
+{% block page_heading %}Inventory{% endblock %}
+{% block content %}
+<table class="basetable">
+    <tr>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Stock <small>($/unit)</small></th>
+        <th>Sales <small>($/unit)</small></th>
+        <th>Markup</th>
+        <th title="Performance">Perf.</th>
+    </tr>
+    {% for item in items %}
+    <tr class="item" data-markup="{{ item.markup_scheme }}">
+        <td>{{ item.name }}</td>
+        <td class="number quantity">{{ item.calculate_quantity|floatformat:1 }}</td>
+        <td class="number purchased">${{ item.calculate_purchased_value_per_unit|floatformat:2 }}</td>
+        <td class="number sold">${{ item.calculate_sold_value_per_unit|floatformat:2 }}</td>
+        <td class="chart markup">&nbsp;</td>
+        <td class="chart performance">&nbsp;</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}
 {% block page_scripts %}
 <script type="text/javascript"
         src="/static/js/jquery.sparkline.min.js"></script>
@@ -48,27 +72,3 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
-{% block title_tag %}Inventory{% endblock %}
-{% block page_heading %}Inventory{% endblock %}
-{% block content %}
-<table class="basetable">
-    <tr>
-        <th>Name</th>
-        <th>Quantity</th>
-        <th>Stock <small>($/unit)</small></th>
-        <th>Sales <small>($/unit)</small></th>
-        <th>Markup</th>
-        <th title="Performance">Perf.</th>
-    </tr>
-    {% for item in items %}
-    <tr class="item" data-markup="{{ item.markup_scheme }}">
-        <td>{{ item.name }}</td>
-        <td class="number quantity">{{ item.calculate_quantity|floatformat:1 }}</td>
-        <td class="number purchased">${{ item.calculate_purchased_value_per_unit|floatformat:2 }}</td>
-        <td class="number sold">${{ item.calculate_sold_value_per_unit|floatformat:2 }}</td>
-        <td class="chart markup">&nbsp;</td>
-        <td class="chart performance">&nbsp;</td>
-    </tr>
-    {% endfor %}
-</table>
-{% endblock content %}

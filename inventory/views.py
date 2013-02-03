@@ -4,6 +4,8 @@
 
     .. moduleauthor:: Matthew de Verteuil <mverteuil@github.com>
 """
+import json
+
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
@@ -14,6 +16,20 @@ from inventory.models import Account
 from inventory.models import InventoryItem
 from inventory.models import Purchaser
 from inventory.models import Transaction
+
+
+def generate_markup_map():
+    """
+        Produces a dict mapping (id, markup) for
+        using the markup_scheme field data of items in JavaScript
+        functions
+
+        Returns
+        -------
+        markup_map : `dict`
+            A dicts {'1': '1@1'}
+    """
+    return dict((i.pk, i.markup_scheme,) for i in InventoryItem.objects.all())
 
 
 @render_to('accounts.html')
@@ -45,4 +61,5 @@ def transaction(request, transact_id=None):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('transactions'))
-    return dict(form=form)
+    return dict(form=form,
+                items=json.dumps(generate_markup_map()))
