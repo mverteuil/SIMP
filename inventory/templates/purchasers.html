@@ -10,10 +10,11 @@
     </tr>
     {% for purchaser in purchasers %}
     <tr>
-        <td>{{ purchaser.name }}</td>
+        <td><a href="{% url purchaser p_id=purchaser.pk %}">{{ purchaser.name }}</a></td>
         <td class="number">{{ purchaser.calculate_consumption|floatformat:1 }}</td>
         <td class="number">{{ purchaser.calculate_income|floatformat:2 }}</td>
     </tr>
     {% endfor %}
 </table>
+<a href="{% url purchaser %}">Create New Purchaser</a>
 {% endblock content %}

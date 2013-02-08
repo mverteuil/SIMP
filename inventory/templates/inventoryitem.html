@@ -1,0 +1,18 @@
+{% extends "section.html" %}
+{% block title_tag %}Item{% endblock %}
+{% block page_heading %}Item{% endblock %}
+{% block content %}
+{% if form.instance.pk %}
+<form action="{% url inventoryitem item_id=form.instance.pk %}" method="POST">
+{% else %}
+<form action="{% url inventoryitem %}" method="POST">
+{% endif %}
+    {% csrf_token %}
+    {% for field in form %}
+    <p>{{ field.label_tag }} {{ field }}{% if field.errors %}<br/>
+       {{ field.errors }}{% endif %}</p>
+    {% endfor %}
+    <div class="markup-buttons"></div>
+    <button class="save">Submit</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends "section.html" %}
+{% block title_tag %}Account{% endblock %}
+{% block page_heading %}Account{% endblock %}
+{% block content %}
+{% if form.instance.pk %}
+<form action="{% url account account_id=form.instance.pk %}" method="POST">
+{% else %}
+<form action="{% url account %}" method="POST">
+{% endif %}
+    {% csrf_token %}
+    {% for field in form %}
+    <p>{{ field.label_tag }} {{ field }}{% if field.errors %}<br/>
+       {{ field.errors }}{% endif %}</p>
+    {% endfor %}
+    <button class="save">Submit</button>
+</form>
+{% endblock content %}

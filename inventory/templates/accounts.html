@@ -9,9 +9,10 @@
     </tr>
     {% for account in accounts %}
     <tr>
-        <td>{{ account.name }}</td>
+        <td><a href="{% url account account_id=account.pk %}">{{ account.name }}</a></td>
         <td>{{ account.calculate_balance|floatformat:2 }}</td>
     </tr>
     {% endfor %}
 </table>
+<a href="{% url account %}">Create New Account</a>
 {% endblock content %}

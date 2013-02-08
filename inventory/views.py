@@ -32,14 +32,50 @@ def generate_markup_map():
     return dict((i.pk, i.markup_scheme,) for i in InventoryItem.objects.all())
 
 
+@render_to('account.html')
+def account(request, p_id=None):
+    data = request.POST if request.method == "POST" else None
+    instance = Account.objects.get(pk=p_id) if p_id else None
+    form = forms.AccountForm(data, instance=instance)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('accounts'))
+    return dict(form=form)
+
+
 @render_to('accounts.html')
 def accounts(request):
     return dict(accounts=Account.objects.all())
 
 
+@render_to('inventoryitem.html')
+def inventoryitem(request, item_id=None):
+    data = request.POST if request.method == "POST" else None
+    instance = InventoryItem.objects.get(pk=item_id) if item_id else None
+    form = forms.InventoryItemForm(data, instance=instance)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('inventoryitems'))
+    return dict(form=form)
+
+
 @render_to('inventoryitems.html')
 def inventoryitems(request):
     return dict(items=InventoryItem.objects.all())
+
+
+@render_to('purchaser.html')
+def purchaser(request, p_id=None):
+    data = request.POST if request.method == "POST" else None
+    instance = Purchaser.objects.get(pk=p_id) if p_id else None
+    form = forms.PurchaserForm(data, instance=instance)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('purchasers'))
+    return dict(form=form)
 
 
 @render_to('purchasers.html')
