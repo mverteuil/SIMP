@@ -13,7 +13,7 @@
     </tr>
     {% for item in items %}
     <tr class="item" data-markup="{{ item.markup_scheme }}">
-        <td><a href="{% url inventoryitem item_id=item.pk %}">{{ item.name }}</a></td>
+        <td><a href="{% url inventoryitem_view item_id=item.pk %}">{{ item.name }}</a></td>
         <td class="number quantity">{{ item.calculate_quantity|floatformat:1 }}</td>
         <td class="number purchased">${{ item.calculate_purchased_value_per_unit|floatformat:2 }}</td>
         <td class="number sold">${{ item.calculate_sold_value_per_unit|floatformat:2 }}</td>

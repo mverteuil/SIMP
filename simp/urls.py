@@ -30,10 +30,24 @@ urlpatterns = patterns(
     url(r'^a/create/$', 'inventory.views.account', name='account'),
 
     ## Inventory Items
-    url(r'^i/$', 'inventory.views.inventoryitems', name='inventoryitems'),
-    url(r'^i/(?P<item_id>\d+)/$', 'inventory.views.inventoryitem',
-        name='inventoryitem'),
-    url(r'^i/create/$', 'inventory.views.inventoryitem', name='inventoryitem'),
+    url(r'^i/$',
+        'inventory.views.inventoryitems',
+        name='inventoryitems'),
+
+    url(r'^i/(?P<item_id>\d+)/$',
+        'inventory.views.inventoryitem',
+        {'editor': False},
+        'inventoryitem_view'),
+
+    url(r'^i/(?P<item_id>\d+)/edit/$',
+        'inventory.views.inventoryitem',
+        {'editor': True},
+        'inventoryitem'),
+
+    url(r'^i/create/$',
+        'inventory.views.inventoryitem',
+        {'editor': True},
+        'inventoryitem'),
 
     ## Purchasers
     url(r'^p/$', 'inventory.views.purchasers', name='purchasers'),

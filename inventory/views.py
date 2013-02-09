@@ -50,15 +50,18 @@ def accounts(request):
 
 
 @render_to('inventoryitem.html')
-def inventoryitem(request, item_id=None):
-    data = request.POST if request.method == "POST" else None
+def inventoryitem(request, item_id=None, editor=False):
     instance = InventoryItem.objects.get(pk=item_id) if item_id else None
-    form = forms.InventoryItemForm(data, instance=instance)
-    if request.method == "POST":
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('inventoryitems'))
-    return dict(form=form)
+    if editor:
+        data = request.POST if request.method == "POST" else None
+        form = forms.InventoryItemForm(data, instance=instance)
+        if request.method == "POST":
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('inventoryitems'))
+        return dict(form=form)
+    else:
+        return dict(item=instance)
 
 
 @render_to('inventoryitems.html')

@@ -2,17 +2,49 @@
 {% block title_tag %}Item{% endblock %}
 {% block page_heading %}Item{% endblock %}
 {% block content %}
-{% if form.instance.pk %}
-<form action="{% url inventoryitem item_id=form.instance.pk %}" method="POST">
+{% if form %}
+    {% if form.instance.pk %}
+    <form action="{% url inventoryitem item_id=form.instance.pk %}" method="POST">
+    {% else %}
+    <form action="{% url inventoryitem %}" method="POST">
+    {% endif %}
+        {% csrf_token %}
+        {% for field in form %}
+        <p>{{ field.label_tag }} {{ field }}{% if field.errors %}<br/>
+           {{ field.errors }}{% endif %}</p>
+        {% endfor %}
+        <div class="markup-buttons"></div>
+        <button class="save">Submit</button>
+    </form>
 {% else %}
-<form action="{% url inventoryitem %}" method="POST">
+    <table>
+        <tr>
+            <th colspan="3">Name</th>
+            <th>Acquisition Dates</th>
+        </tr>
+        <tr>
+            <td colspan="3">{{ item.name }}</td>
+            <td>
+                {% for a_date in item.acquired_dates %}
+                    {{ a_date }}<br />
+                {% empty %}
+                    Never
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Quantity Sold</th>
+            <th>Quantity Remaining</th>
+            <th>Shrink</th>
+            <th>Quantity Acquired</th>
+        </tr>
+        <tr>
+            <td>{{ item.total_sold }}</td>
+            <td>{{ item.calculate_quantity }}</td>
+            <td>{{ item.shrink_quantity }}</td>
+            <td>{{ item.total_acquired }}</td>
+        </tr>
+    </table>
+    <a href="{% url inventoryitem item_id=item.pk %}">Edit this Item</a>
 {% endif %}
-    {% csrf_token %}
-    {% for field in form %}
-    <p>{{ field.label_tag }} {{ field }}{% if field.errors %}<br/>
-       {{ field.errors }}{% endif %}</p>
-    {% endfor %}
-    <div class="markup-buttons"></div>
-    <button class="save">Submit</button>
-</form>
 {% endblock content %}
