@@ -125,6 +125,30 @@ class InventoryItem(models.Model):
         """
         return self.transactions.filter(delta_quantity__lte=0)
 
+    @property
+    def total_acquired(self):
+        """
+            Total number of units acquired over all time
+
+            Returns
+            -------
+            total : `float`
+                Sum of delta_quantity for inbound_transactions
+        """
+        return sum(t.delta_quantity for t in self.inbound_transactions)
+
+    @property
+    def total_sold(self):
+        """
+            Total number of units sold over all time
+
+            Returns
+            -------
+            total : `float`
+                Sum of delta_quantity for outbound_transactions
+        """
+        return abs(sum(t.delta_quantity for t in self.outbound_transactions))
+
 
 class Account(models.Model):
     """

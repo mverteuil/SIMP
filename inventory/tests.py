@@ -114,6 +114,16 @@ class InventoryItemTest(BasicSetup, TestCase):
         num_outbound = Transaction.objects.filter(delta_quantity__lt=0).count()
         assert len(self.item.outbound_transactions) == num_outbound
 
+    def test_total_acquired(self):
+        """ Should provide sum of quantities for inbound transactions """
+        total = sum(t.delta_quantity for t in self.item.inbound_transactions)
+        assert self.item.total_acquired == total
+
+    def test_total_sold(self):
+        """ Should provide sum of quantities for outbound transactions """
+        total = sum(t.delta_quantity for t in self.item.outbound_transactions)
+        assert self.item.total_sold + total == 0
+
 
 class PurchaserTest(BasicSetup, TestCase):
     def test_calculated_income(self):
