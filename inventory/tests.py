@@ -124,6 +124,19 @@ class InventoryItemTest(BasicSetup, TestCase):
         total = sum(t.delta_quantity for t in self.item.outbound_transactions)
         assert self.item.total_sold + total == 0
 
+    def test_shrink_quantity(self):
+        """ Should provide sum of quantities where balance was zero """
+        Transaction.objects.create(
+            item=self.item,
+            account=self.account,
+            purchaser=self.seller,
+            delta_quantity=100,
+            delta_balance=D("0.00"),
+        )
+        total = abs(sum(t.delta_quantity for t in
+                    self.item.transactions.filter(delta_balance=0)))
+        assert self.item.shrink_quantity == total
+
 
 class PurchaserTest(BasicSetup, TestCase):
     def test_calculated_income(self):

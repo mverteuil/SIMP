@@ -149,6 +149,19 @@ class InventoryItem(models.Model):
         """
         return abs(sum(t.delta_quantity for t in self.outbound_transactions))
 
+    @property
+    def shrink_quantity(self):
+        """
+            Total number of units 'lost' in NIL transactions
+
+            Returns
+            -------
+            total : `float`
+                Sum of delta_quantity for transactions where delta_balance = 0.
+        """
+        return abs(sum(t.delta_quantity for t in
+                       self.transactions.filter(delta_balance=0)))
+
 
 class Account(models.Model):
     """
