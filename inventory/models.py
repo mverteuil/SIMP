@@ -57,8 +57,7 @@ class InventoryItem(models.Model):
             quantity : `float`
                 The calculated quantity
         """
-        return sum([t.delta_quantity for t in
-                    Transaction.objects.filter(item=self)])
+        return sum([t.delta_quantity for t in self.transactions.all()])
 
     def calculate_purchased_value_per_unit(self):
         """
@@ -78,8 +77,7 @@ class InventoryItem(models.Model):
                 the purchaser
         """
         vpus = [(abs(t.delta_balance) / D(t.delta_quantity)) for t in
-                Transaction.objects.filter(item=self,
-                                           delta_quantity__gt=0)]
+                self.inbound_transactions]
         return sum(vpus) / (max(len(vpus), 1))
 
     def calculate_sold_value_per_unit(self):
@@ -100,14 +98,14 @@ class InventoryItem(models.Model):
                 the seller
         """
         vpus = [(t.delta_balance / D(abs(t.delta_quantity))) for t in
-                Transaction.objects.filter(item=self,
-                                           delta_quantity__lt=0)]
+                self.outbound_transactions]
         return sum(vpus) / (max(len(vpus), 1))
 
     @property
     def inbound_transactions(self):
         """
             Transactions where the quantity is greater than zero.
+
             Returns
             -------
             inbound_transactions : list
