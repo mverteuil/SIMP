@@ -57,7 +57,7 @@ class AccountTest(BasicSetup, TestCase):
 
 class InventoryItemTest(BasicSetup, TestCase):
     def test_unicode(self):
-        """ Sould return name when cast as unicode """
+        """ Should return name when cast as unicode """
         assert unicode(self.item) == self.item.name
 
     def test_acquired(self):
