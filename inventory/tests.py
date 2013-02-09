@@ -50,6 +50,10 @@ class BasicSetup(object):
 
 
 class AccountTest(BasicSetup, TestCase):
+    def test_unicode(self):
+        """ Should return name when cast as unicode """
+        assert unicode(self.account) == self.account.name
+
     def test_calculated_balance(self):
         """ Should calculate balance equal to the sum of transactions """
         assert self.account.calculate_balance() == D("125.00")
