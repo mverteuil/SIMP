@@ -51,13 +51,22 @@ class BasicSetup(object):
 
 class AccountTest(BasicSetup, TestCase):
     def test_calculated_balance(self):
-        """ Value should be equal to the sum of transactions """
+        """ Should calculate balance equal to the sum of transactions """
         assert self.account.calculate_balance() == D("125.00")
 
 
 class InventoryItemTest(BasicSetup, TestCase):
+    def test_unicode(self):
+        """ Sould return name when cast as unicode """
+        assert unicode(self.item) == self.item.name
+
+    def test_acquired(self):
+        """ Should determine the date acquired """
+        assert len(self.item.acquired) == 1
+        assert self.item.acquired[0] == self.buy_transaction.timestamp
+
     def test_calculated_quantity(self):
-        """ Value should be equal to the sum of transactions """
+        """ Should provide quantity as sum of transactions """
         assert self.item.calculate_quantity() == 0
 
     def test_calculated_purchased_value_per_unit(self):
@@ -90,6 +99,16 @@ class InventoryItemTest(BasicSetup, TestCase):
             delta_balance=D("75.00"),
         )
         assert self.item.calculate_sold_value_per_unit() == 1.125
+
+    def test_inbound_transactions(self):
+        """ Should provide transactions filtered for inbound """
+        num_inbound = Transaction.objects.filter(delta_quantity__gt=0).count()
+        assert len(self.item.inbound_transactions) == num_inbound
+
+    def test_outbound_transactions(self):
+        """ Should provide transactions filtered for outbound/nil """
+        num_outbound = Transaction.objects.filter(delta_quantity__lt=0).count()
+        assert len(self.item.outbound_transactions) == num_outbound
 
 
 class PurchaserTest(BasicSetup, TestCase):

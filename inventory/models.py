@@ -37,6 +37,17 @@ class InventoryItem(models.Model):
     def __unicode__(self):
         return self.name
 
+    @property
+    def acquired(self):
+        """
+            Find dates corresponding to inbound transactions
+
+            Returns
+            -------
+            acquired_dates : `list`
+        """
+        return [t.timestamp for t in self.inbound_transactions]
+
     def calculate_quantity(self):
         """
             Calculates the current quantity by summing transactions
@@ -92,6 +103,29 @@ class InventoryItem(models.Model):
                 Transaction.objects.filter(item=self,
                                            delta_quantity__lt=0)]
         return sum(vpus) / (max(len(vpus), 1))
+
+    @property
+    def inbound_transactions(self):
+        """
+            Transactions where the quantity is greater than zero.
+            Returns
+            -------
+            inbound_transactions : list
+                A list of transactions where delta_quantity > 0.
+        """
+        return self.transactions.filter(delta_quantity__gt=0)
+
+    @property
+    def outbound_transactions(self):
+        """
+            Transactions where the quantity is equal to or less than zero.
+
+            Returns
+            -------
+            outbound_transactions : list
+                A list of transactions where delta_quantity <= 0.
+        """
+        return self.transactions.filter(delta_quantity__lte=0)
 
 
 class Account(models.Model):
