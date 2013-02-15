@@ -33,9 +33,9 @@ def generate_markup_map():
 
 
 @render_to('account.html')
-def account(request, p_id=None):
+def account(request, account_id=None):
     data = request.POST if request.method == "POST" else None
-    instance = Account.objects.get(pk=p_id) if p_id else None
+    instance = Account.objects.get(pk=account_id) if account_id else None
     form = forms.AccountForm(data, instance=instance)
     if request.method == "POST":
         if form.is_valid():
