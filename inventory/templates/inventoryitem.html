@@ -1,4 +1,5 @@
 {% extends "section.html" %}
+{% load simptags %}
 {% block title_tag %}Item{% endblock %}
 {% block page_heading %}Item{% endblock %}
 {% block content %}
@@ -17,13 +18,15 @@
         <button class="save">Submit</button>
     </form>
 {% else %}
-    <table>
+    <table class="basetable">
         <tr>
-            <th colspan="3">Name</th>
+            <th colspan="2">Name</th>
+            <th>Markup Scheme</th>
             <th>Acquisition Dates</th>
         </tr>
         <tr>
-            <td colspan="3">{{ item.name }}</td>
+            <td colspan="2">{{ item.name }}</td>
+            <td>{{ item.markup_scheme|render_markup_scheme|safe }}</td>
             <td>
                 {% for a_date in item.acquired_dates %}
                     {{ a_date }}<br />
@@ -39,10 +42,10 @@
             <th>Quantity Acquired</th>
         </tr>
         <tr>
-            <td>{{ item.total_sold }}</td>
-            <td>{{ item.calculate_quantity }}</td>
-            <td>{{ item.shrink_quantity }}</td>
-            <td>{{ item.total_acquired }}</td>
+            <td class="number">{{ item.total_sold }}</td>
+            <td class="number">{{ item.calculate_quantity }}</td>
+            <td class="number">{{ item.shrink_quantity }}</td>
+            <td class="number">{{ item.total_acquired }}</td>
         </tr>
     </table>
     <a href="{% url inventoryitem item_id=item.pk %}">Edit this Item</a>

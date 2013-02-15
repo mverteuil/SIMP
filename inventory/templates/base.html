@@ -21,9 +21,21 @@
     {% block page_styles %}
     {% endblock %}
 </head>
+<body class="{% block body_class %}{% endblock %}">
+<header>
+    <h1>SIMP</h1>
+    <nav>
+        <ul>
+            <li><a href="{% url accounts %}">Accounts</a></li>
+            <li><a href="{% url inventoryitems %}">Items</a></li>
+            <li><a href="{% url purchasers %}">Purchasers</a></li>
+            <li><a href="{% url transactions %}">Transactions</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="content">
 {% block page_head %}
 {% endblock %}
-<div class="content">
 {% block content %}
 {% endblock %}
 </div>

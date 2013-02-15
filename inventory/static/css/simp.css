@@ -57,10 +57,11 @@ body {
   background: #fff;
   font-family: Georgia, Times New Roman, Times, Serif;
   line-height:1.5;
-  padding: 1em;
+  padding: 0em;
 }
 
 .number { font-family: Monaco, Courier New, Courier; text-align: right !important; }
+.content { padding: 1em; }
 
 
 /* Headings
@@ -80,18 +81,23 @@ h4 img, h5 img, h6 img {
   margin: 0;
 }
 
+header { width: 100%; background-color: #14D100; width: 100%; height: 5em;}
+header h1 { padding: 0.25em; width: 5em; float:left }
+header ul, header li { display:inline; vertical-align: middle; height; 5em; }
+
 /* Tables
  * -------------------------------------------------------------- */
 table { margin: 1em; border-collapse: collapse; border: 1px; border-style: solid; border-spacing: 0; width: 80%; }
 .basetable th{font-weight: bold; padding: 0.5em 0.75em 0.5em 0.75em; font-size: 16px;text-align: center;}
 .basetable td{text-align: center;padding: 0.75em 0.75em 0.75em 0.75em; border: 1px solid}
+.lookup tr:hover { background-color: #fff9bd; }
+td:hover { background-color: #fff9bd; }
 td.long-left{text-align: left;background-color: #ffffff;}
 td.long-right{text-align: right;background-color: #ffffff;}
 td.blue{background-color: #f3f7f8;border-bottom: 1px solid #e9f0f2;}
 td.yellow{background-color: #fff9bd;border-bottom: 1px solid #f2f0b6;border-right: 0px;}
 td.number{width:10em;}
 td.chart{width:8em;}
-td:hover, tr:hover { background-color: #fff9bd; }
 th, tfoot td { background: #def3b8; }
 th small { font-size: 75%; }
 
@@ -104,3 +110,15 @@ form select, input { font-size: 1em; display:inline-block; width: 50%; text-alig
 button { font-size: 1.3em; margin-right: 1.1em; float: right; clear: right; }
 button[data-value] { font-size: 0.5em; float: none; width: 45% }
 form ul.errorlist { color: crimson; }
+
+/* Item Specific
+ * -------------------------------------------------------------- */
+.markup-bubble { 
+    display: inline-block;
+    width: 5.5em;
+    float: left;
+    background-color: #fff9bd;
+    text-align: center;
+    padding: 0.3em;
+    border-radius:2em;
+}
