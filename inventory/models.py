@@ -5,7 +5,10 @@
     .. moduleauthor:: Matthew de Verteuil <mverteuil@github.com>
 """
 from decimal import Decimal as D
+from math import ceil
 
+from django.core.validators import MaxValueValidator
+from django.core.validators import MinValueValidator
 from django.db import models
 
 
@@ -14,25 +17,50 @@ class InventoryItem(models.Model):
         Represents a specific inventory item. For example, an fruit store would
         probably have entries for "Banana", "Apple", "Grapefruit", etc.
 
+        Pricing is determined as follows:
+            Acquired: 250 units @ $1500.00
+            Decay: 2, Growth: 6%, Nearest: 5
+                                 250 units @1500.00
+            125 units @ 750.00 > 125 units @ 800.00
+             62 units @ 400.00 >  62 units @ 430.00
+             31 units @ 215.00 >  31 units @ 230.00
+             15 units @ 115.00 >  15 units @ 125.00
+              7 units @  62.50 >   7 units @  70.00
+              3 units @  30.00 >   3 units @  35.00
+              1  unit @  13.33 >   1  unit @  15.00
+
         Parameters
         ----------
         name : `string`
             A human readable name for this item
-        markup_scheme : `string`
-            A format string, with the syntax--
-               `{quantity}@{price}[, {quantity}@{price}, ...]`
-            Used to set up pricing 'tiers', as in the case: *Apples are $1.00
-            each, but we sell 5 Apples for $4.00.* Which would be represented
-            in as::
-                1@1.00,5@4.00
-
+        markup_decay : `int`
+            The rate at which growth is applied to prices which are
+            marked up on a sliding scale with more profit made on
+            lower units purchased. A faster growth occurs when this
+            number is smaller. A reasonable decay is 2.
+        markup_growth : `float`
+            The rate at which to grow at each interval introduced by
+            the decay. A modest rate is 6% or 1.06.
+        markup_nearest : `int`
+            Always round up to the nearest whole ones value within the domain
+            of multiples of this number. Default is 5.
     """
     name = models.CharField(verbose_name="Name",
                             max_length=64,
                             blank=False)
-    markup_scheme = models.CharField(verbose_name="Markup Scheme",
-                                     max_length=64,
-                                     blank=True)
+    markup_decay = models.PositiveIntegerField(verbose_name="Markup Decay",
+                                               default=2,)
+    markup_growth = models.FloatField(verbose_name="Markup Growth",
+                                      default=1.06,
+                                      validators=[
+                                          MinValueValidator(1)
+                                      ],)
+    markup_nearest = models.PositiveIntegerField(verbose_name="Markup Nearest",
+                                                 default=5,
+                                                 validators=[
+                                                     MinValueValidator(0),
+                                                     MaxValueValidator(9)
+                                                 ],)
 
     def __unicode__(self):
         return self.name
@@ -160,6 +188,27 @@ class InventoryItem(models.Model):
         """
         return abs(sum(t.delta_quantity for t in
                        self.transactions.filter(delta_balance=0)))
+
+    @property
+    def markup_scheme(self):
+        """
+            Rendered markup scheme
+
+            Returns
+            -------
+            markup_scheme : `string`
+                e.g. 1@15,3@35,7@80,...
+        """
+        def generate_tiers():
+            t = self.total_acquired
+            p = sum((abs(t.delta_balance) for t in self.inbound_transactions))
+            while t > 1:
+                t = t / self.markup_decay
+                p = (p / self.markup_decay) * D(self.markup_growth)
+                r = D(int(p) / float(self.markup_nearest))
+                r = D((ceil(r) if r % p > 1 else r)) * D(self.markup_nearest)
+                yield "%s@%s" % (t, D(r))
+        return ",".join(list(generate_tiers()))
 
 
 class Account(models.Model):
