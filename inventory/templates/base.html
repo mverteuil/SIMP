@@ -23,13 +23,13 @@
 </head>
 <body class="{% block body_class %}{% endblock %}">
 <header>
-    <h1>SIMP</h1>
+<h1>SIMP</h1>
     <nav>
         <ul>
-            <li><a href="{% url accounts %}">Accounts</a></li>
-            <li><a href="{% url inventoryitems %}">Items</a></li>
-            <li><a href="{% url purchasers %}">Purchasers</a></li>
-            <li><a href="{% url transactions %}">Transactions</a></li>
+            <li class="{% if section == "accounts" %}current{%endif%}"><a href="{% url accounts %}">Accounts</a></li>
+            <li class="{% if section == "inventoryitems" %}current{%endif%}"><a href="{% url inventoryitems %}">Items</a></li>
+            <li class="{% if section == "purchasers" %}current{%endif%}"><a href="{% url purchasers %}">Purchasers</a></li>
+            <li class="{% if section == "transactions" %}current{%endif%}"><a href="{% url transactions %}">Transactions</a></li>
         </ul>
     </nav>
 </header>
