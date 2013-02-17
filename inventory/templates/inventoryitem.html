@@ -28,7 +28,7 @@
             <td colspan="2">{{ item.name }}</td>
             <td>{{ item.markup_scheme|render_markup_scheme|safe }}</td>
             <td>
-                {% for a_date in item.acquired_dates %}
+                {% for a_date in item.acquired %}
                     {{ a_date }}<br />
                 {% empty %}
                     Never
