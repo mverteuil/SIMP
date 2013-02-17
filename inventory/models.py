@@ -76,8 +76,8 @@ class InventoryItem(models.Model):
                 The mean of calculated cost/unit values where we are
                 the purchaser
         """
-        total = sum(abs(t.delta_balance) for t in self.inbound_transactions)
-        return D(total / max(self.total_acquired, 1))
+        total = sum((abs(t.delta_balance) for t in self.inbound_transactions))
+        return total / D(max(self.total_acquired, 1))
 
     def calculate_sold_value_per_unit(self):
         """
@@ -98,7 +98,7 @@ class InventoryItem(models.Model):
                 the seller
         """
         total = sum(abs(t.delta_balance) for t in self.outbound_transactions)
-        return D(total / max(self.total_sold, 1))
+        return total / D(max(self.total_sold, 1))
 
     @property
     def inbound_transactions(self):
