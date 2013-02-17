@@ -39,7 +39,7 @@ class SectionMarker(object):
     def __call__(self, func):
         def wrapped_func(request, *args, **kwargs):
             context_params = func(request, *args, **kwargs)
-            if context_params is dict:
+            if isinstance(context_params, dict):
                 context_params.update({'section': self.section_name})
             return context_params
         wrapped_func.__name__ = func.__name__
