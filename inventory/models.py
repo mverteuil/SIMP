@@ -65,20 +65,19 @@ class InventoryItem(models.Model):
             the rates at which this item was acquired.
 
             For example:
-                Apples were stocked twice, first we acquired 75@50.00, then
-                we acquired 270@150 later. in the first acquisition we have a
-                value/unit rate of 50/75=0.66, in the second the rate is
-                150/270=0.55. so we'll return the mean rate of 0.66+0.55/2=0.61
+                Apples were stocked twice, first we acquired 50 @ 0.25 = 12.50.
+                We acquired 50 @ 0.30 = 15.00 later. A grand total of 27.50 is
+                spent, with 100 units acquired, so the value per unit is 0.275.
+                (27.50 spent/100 units acquired)
 
-            returns
+            Returns
             -------
             purchased_value_per_unit : :class:`decimal.Decimal`
                 The mean of calculated cost/unit values where we are
                 the purchaser
         """
-        vpus = [(abs(t.delta_balance) / D(t.delta_quantity)) for t in
-                self.inbound_transactions]
-        return sum(vpus) / (max(len(vpus), 1))
+        total = sum(abs(t.delta_balance) for t in self.inbound_transactions)
+        return D(total / max(self.total_acquired, 1))
 
     def calculate_sold_value_per_unit(self):
         """
@@ -86,10 +85,11 @@ class InventoryItem(models.Model):
             the rates at which this item was sold.
 
             For example:
-                Apples were sold twice, first we sold 75@50.00, then
-                we sold 270@150 later. In the first sale we have a
-                value/unit rate of 50/75=0.66, in the second the rate is
-                150/270=0.55. So we'll return the mean rate of 0.66+0.55/2=0.61
+                Apples were sold four times, first we sold 25@0.50, then
+                we sold 50@0.40 later. Next we have two sales, at 0.70, one
+                of 12 and one of 13. A grand total of 50.00 is earned, with 100
+                units sold, so the sold value per unit is 0.50.
+                (50.00 earned/100 units sold)
 
             Returns
             -------
@@ -97,9 +97,8 @@ class InventoryItem(models.Model):
                 The mean of calculated cost/unit values where we are
                 the seller
         """
-        vpus = [(t.delta_balance / D(abs(t.delta_quantity))) for t in
-                self.outbound_transactions]
-        return sum(vpus) / (max(len(vpus), 1))
+        total = sum(abs(t.delta_balance) for t in self.outbound_transactions)
+        return D(total / max(self.total_sold, 1))
 
     @property
     def inbound_transactions(self):
