@@ -110,7 +110,8 @@ def purchasers(request):
 @render_to('transactions.html')
 @SectionMarker('transactions')
 def transactions(request):
-    return dict(transactions=Transaction.objects.all())
+    return dict(transactions=
+                Transaction.objects.all().order_by('timestamp').reverse())
 
 
 @render_to('transaction.html')
