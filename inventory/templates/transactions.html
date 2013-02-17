@@ -11,6 +11,7 @@
         <th>Purchaser</th>
         <th>Delta Quantity</th>
         <th>Delta Balance</th>
+        <th>Delete</th>
     </tr>
     {% for transact in transactions %}
     <tr>
@@ -21,6 +22,7 @@
         <td>{{ transact.purchaser.name }}</td>
         <td class="number">{{ transact.delta_quantity|floatformat:1 }}</td>
         <td class="number">{{ transact.delta_balance|floatformat:2 }}</td>
+        <td><a href="{% url delete_transaction transact.pk %}">X</a></td>
     </tr>
     {% endfor %}
 </table>

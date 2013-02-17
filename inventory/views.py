@@ -126,3 +126,8 @@ def transaction(request, transact_id=None):
             return HttpResponseRedirect(reverse('transactions'))
     return dict(form=form,
                 items=json.dumps(generate_markup_map()))
+
+
+def delete_transaction(request, transact_id=None):
+    Transaction.objects.get(pk=transact_id).delete()
+    return HttpResponseRedirect(reverse('transactions'))

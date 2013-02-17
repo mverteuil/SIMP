@@ -58,5 +58,7 @@ urlpatterns = patterns(
     url(r'^t/$', 'inventory.views.transactions', name='transactions'),
     url(r'^t/(?P<transact_id>\d+)/$',
         'inventory.views.transaction', name='transaction'),
+    url(r'^t/(?P<transact_id>\d+)/delete/$',
+        'inventory.views.delete_transaction', name='delete_transaction'),
     url(r'^t/create/$', 'inventory.views.transaction', name='transaction'),
 )
