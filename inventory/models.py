@@ -85,7 +85,7 @@ class InventoryItem(models.Model):
             quantity : `float`
                 The calculated quantity
         """
-        return sum([t.delta_quantity for t in self.transactions.all()])
+        return max(0, sum(t.delta_quantity for t in self.transactions.all()))
 
     def calculate_purchased_value_per_unit(self):
         """
