@@ -154,7 +154,7 @@ class InventoryItemTest(BasicSetup, TestCase):
     def test_purchase_price(self):
         """ Should calculate own purchase price """
         purchase_price = D(25)
-        assert self.item.calculate_purchase_price() == purchase_price
+        assert self.item.purchase_price == purchase_price
 
     def test_shrink_costs(self):
         """ Should calculate shrink costs """
@@ -163,6 +163,11 @@ class InventoryItemTest(BasicSetup, TestCase):
         in_potential *= self.item.calculate_sold_value_per_unit()
         assert self.item.calculate_shrink_at_cost() == at_cost
         assert self.item.calculate_shrink_at_potential() == at_cost
+
+    def test_total_recovered(self):
+        """ Should calculated costs recovered through sales """
+        recovered = sum(t.delta_balance for t in self.item.outbound_transactions)
+        assert self.item.total_recovered == recovered
 
     def test_automatic_markup(self):
         """

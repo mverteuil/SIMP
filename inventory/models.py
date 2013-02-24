@@ -142,7 +142,6 @@ class InventoryItem(models.Model):
         """
         return D(self.total_acquired) * self.calculate_sold_value_per_unit()
 
-    
     def calculate_shrink_at_cost(self):
         """
             Calculates the amount lost to shrink at cost.
@@ -192,7 +191,7 @@ class InventoryItem(models.Model):
     @property
     def purchase_price(self):
         """
-            Calculates the total value of this item at purchase.
+            Total value of this item at purchase.
 
             Returns
             -------
@@ -200,6 +199,16 @@ class InventoryItem(models.Model):
                 The total amount paid for this item
         """
         return abs(sum(t.delta_balance for t in self.inbound_transactions))
+
+    @property
+    def total_recovered(self):
+        """
+            Total value recovered through sales of this item
+
+            Returns
+            total_recovered : :class:`decimal.Decimal`
+        """
+        return sum(t.delta_balance for t in self.outbound_transactions)
 
     @property
     def total_acquired(self):
