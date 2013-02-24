@@ -9,7 +9,7 @@ from decimal import Decimal as D
 from django.test import TestCase
 
 from inventory.models import Account
-from inventory.models import InventoryItem
+from inventory.models import InventoryItem as Item
 from inventory.models import Purchaser
 from inventory.models import Transaction
 
@@ -22,9 +22,8 @@ class BasicSetup(object):
             name="Test Account",
             initial_balance=D("100.00"),
         )
-        self.item = InventoryItem.objects.create(
+        self.item = Item.objects.create(
             name="Test Item",
-            markup_scheme="1@5.00,5@4.00",
         )
         self.seller = Purchaser.objects.create(name="Test Seller")
         self.buyer = Purchaser.objects.create(name="Test Buyer")
@@ -45,7 +44,7 @@ class BasicSetup(object):
 
     def tearDown(self):
         super(BasicSetup, self).tearDown()
-        for model in (Account, InventoryItem, Purchaser, Transaction):
+        for model in (Account, Item, Purchaser, Transaction):
             model.objects.all().delete()
 
 
@@ -82,7 +81,10 @@ class InventoryItemTest(BasicSetup, TestCase):
             delta_quantity=100,
             delta_balance=D("-75.00"),
         )
-        assert self.item.calculate_purchased_value_per_unit() == 0.625
+        total = sum((abs(t.delta_balance)
+                     for t in self.item.inbound_transactions))
+        total /= D(self.item.total_acquired)
+        assert self.item.calculate_purchased_value_per_unit() == total
 
     def test_calculated_sold_value_per_unit(self):
         assert self.item.calculate_sold_value_per_unit() == 1
@@ -102,7 +104,10 @@ class InventoryItemTest(BasicSetup, TestCase):
             delta_quantity=(-60),
             delta_balance=D("75.00"),
         )
-        assert self.item.calculate_sold_value_per_unit() == 1.125
+        total = sum(abs(t.delta_balance)
+                    for t in self.item.outbound_transactions)
+        total /= D(self.item.total_sold)
+        assert self.item.calculate_sold_value_per_unit() == total
 
     def test_inbound_transactions(self):
         """ Should provide transactions filtered for inbound """
