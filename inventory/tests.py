@@ -142,6 +142,15 @@ class InventoryItemTest(BasicSetup, TestCase):
                     self.item.transactions.filter(delta_balance=0)))
         assert self.item.shrink_quantity == total
 
+    def test_potential_value(self):
+        """
+            Should calculate potential with the product of sold vpu
+            and total acquired
+        """
+        potential = self.item.calculate_sold_value_per_unit()
+        potential *= D(self.item.total_acquired)
+        assert self.item.calculate_potential_value() == potential
+
     def test_automatic_markup(self):
         """
             Should automatically calculate markup scheme based on control

@@ -128,6 +128,20 @@ class InventoryItem(models.Model):
         total = sum(abs(t.delta_balance) for t in self.outbound_transactions)
         return total / D(max(self.total_sold, 1))
 
+    def calculate_potential_value(self):
+        """
+            Calculates the current potential value of this item.
+
+            Potential value is:
+                (total acquired) x (sold value per unit)
+
+            Returns
+            -------
+            potential : :class:`decimal.Decimal`
+                The amount this item is potentially worth, given its history
+        """
+        return D(self.total_acquired) * self.calculate_sold_value_per_unit()
+
     @property
     def inbound_transactions(self):
         """
