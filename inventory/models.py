@@ -164,6 +164,18 @@ class InventoryItem(models.Model):
         """
         return D(self.shrink_quantity) * self.calculate_sold_value_per_unit()
 
+    def calculate_profit(self):
+        """
+            Calculates amount recovered through sales that exceeds 
+            the purchase price
+
+            Returns
+            -------
+            profit : :class:`decimal.Decimal`
+                Value recovered that exceeds value traded for quantity
+        """
+        return max(0, self.total_recovered - self.purchase_price)
+
     @property
     def inbound_transactions(self):
         """
@@ -206,7 +218,9 @@ class InventoryItem(models.Model):
             Total value recovered through sales of this item
 
             Returns
+            -------
             total_recovered : :class:`decimal.Decimal`
+                Sum of all outbound delta_balance for this item
         """
         return sum(t.delta_balance for t in self.outbound_transactions)
 

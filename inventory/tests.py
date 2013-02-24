@@ -169,6 +169,11 @@ class InventoryItemTest(BasicSetup, TestCase):
         recovered = sum(t.delta_balance for t in self.item.outbound_transactions)
         assert self.item.total_recovered == recovered
 
+    def test_profit(self):
+        """ Should calculate amount recovered that exceeds costs """
+        profit = max(0, self.item.total_recovered - self.item.purchase_price)
+        assert self.item.calculate_profit() == profit
+
     def test_automatic_markup(self):
         """
             Should automatically calculate markup scheme based on control
