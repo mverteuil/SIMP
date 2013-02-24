@@ -101,6 +101,8 @@ td.number{width:10em;}
 td.chart{width:8em;}
 th, tfoot td { background: #def3b8; }
 th small { font-size: 75%; }
+td.name { font-size: 200%; }
+td.middle { vertical-align:middle; }
 
 /* Forms
  * -------------------------------------------------------------- */

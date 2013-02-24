@@ -25,9 +25,9 @@
             <th>Acquisition Dates</th>
         </tr>
         <tr>
-            <td colspan="2">{{ item.name }}</td>
+            <td class="name middle" colspan="2">{{ item.name }}</td>
             <td>{{ item.markup_scheme|render_markup_scheme|safe }}</td>
-            <td>
+            <td class="middle">
                 {% for a_date in item.acquired %}
                     {{ a_date }}<br />
                 {% empty %}
@@ -36,16 +36,36 @@
             </td>
         </tr>
         <tr>
+            <th colspan="2">Quantity Acquired</th>
             <th>Quantity Sold</th>
             <th>Quantity Remaining</th>
-            <th>Shrink</th>
-            <th>Quantity Acquired</th>
         </tr>
         <tr>
+            <td colspan="2" class="number">{{ item.total_acquired }}</td>
             <td class="number">{{ item.total_sold }}</td>
             <td class="number">{{ item.calculate_quantity }}</td>
-            <td class="number">{{ item.shrink_quantity }}</td>
-            <td class="number">{{ item.total_acquired }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Shrink</th>
+            <th>Shrink Cost</th>
+            <th>Shrink Potential</th>
+        </tr>
+        <tr>
+            <td colspan="2" class="number">{{ item.shrink_quantity }}</td>
+            <td class="number">${{ item.calculate_shrink_at_cost|floatformat:0 }}</td>
+            <td class="number">${{ item.calculate_shrink_at_potential|floatformat:0 }}</td>
+        </tr>
+        <tr>
+            <th>Purchase Value</th>
+            <th>Potential Value</th>
+            <th>Recovered Value</th>
+            <th>Profit</th>
+        </tr>
+        <tr>
+            <td class="number">${{ item.purchase_price|floatformat:2 }}</td>
+            <td class="number">${{ item.calculate_potential_value|floatformat:-2}}</td>
+            <td class="number">${{ item.total_recovered|floatformat:2 }}</td>
+            <td class="number">${{ item.calculate_profit|floatformat:2 }}</td>
         </tr>
     </table>
     <a href="{% url inventoryitem item_id=item.pk %}">Edit this Item</a>
