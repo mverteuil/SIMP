@@ -151,6 +151,19 @@ class InventoryItemTest(BasicSetup, TestCase):
         potential *= D(self.item.total_acquired)
         assert self.item.calculate_potential_value() == potential
 
+    def test_purchase_price(self):
+        """ Should calculate own purchase price """
+        purchase_price = D(25)
+        assert self.item.calculate_purchase_price() == purchase_price
+
+    def test_shrink_costs(self):
+        """ Should calculate shrink costs """
+        at_cost = in_potential = D(self.item.shrink_quantity) 
+        at_cost *= self.item.calculate_purchased_value_per_unit()
+        in_potential *= self.item.calculate_sold_value_per_unit()
+        assert self.item.calculate_shrink_at_cost() == at_cost
+        assert self.item.calculate_shrink_at_potential() == at_cost
+
     def test_automatic_markup(self):
         """
             Should automatically calculate markup scheme based on control

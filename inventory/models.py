@@ -142,6 +142,39 @@ class InventoryItem(models.Model):
         """
         return D(self.total_acquired) * self.calculate_sold_value_per_unit()
 
+    def calculate_purchase_price(self):
+        """
+            Calculates the total value of this item at purchase.
+
+            Returns
+            -------
+            purchase_price : :class:`decimal.Decimal`
+                The total amount paid for this item
+        """
+        return D(self.total_acquired) * self.calculate_purchased_value_per_unit()
+
+    def calculate_shrink_at_cost(self):
+        """
+            Calculates the amount lost to shrink at cost.
+
+            Returns
+            -------
+            shrink_at_cost : :class:`decimal.Decimal`
+                The value lost to shrink if calculated at cost
+        """
+        return D(self.shrink_quantity) * self.calculate_purchased_value_per_unit()
+
+    def calculate_shrink_at_potential(self):
+        """
+            Calculates the amount lost to shrink in potential sales.
+
+            Returns
+            -------
+            shrink_at_cost : :class:`decimal.Decimal`
+                The value lost to shrink in potential sales
+        """
+        return D(self.shrink_quantity) * self.calculate_sold_value_per_unit()
+
     @property
     def inbound_transactions(self):
         """
