@@ -14,7 +14,7 @@
         <th>Delete</th>
     </tr>
     {% for transact in transactions %}
-    <tr>
+    <tr class="{{transact.transaction_code}}">
         <td><a href="{% url transaction transact_id=transact.pk %}">{{ transact.timestamp }}</a></td>
         <td>{{ transact.transaction_code }}</td>
         <td>{{ transact.item.name }}</td>

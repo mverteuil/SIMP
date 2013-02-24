@@ -103,6 +103,9 @@ th, tfoot td { background: #def3b8; }
 th small { font-size: 75%; }
 td.name { font-size: 200%; }
 td.middle { vertical-align:middle; }
+tr.OUT td { background-color: #EEE }
+tr.INB td { background-color: #f3f7f8 }
+tr.NIL td { background-color: #FFF }
 
 /* Forms
  * -------------------------------------------------------------- */
