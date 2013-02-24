@@ -142,6 +142,58 @@ class InventoryItemTest(BasicSetup, TestCase):
                     self.item.transactions.filter(delta_balance=0)))
         assert self.item.shrink_quantity == total
 
+    def test_automatic_markup(self):
+        """
+            Should automatically calculate markup scheme based on control
+            variables (decay, growth and nearest)
+        """
+        round_five = Item.objects.create(
+            name="Oranges",
+            markup_decay=2,
+            markup_growth=1.06,
+            markup_nearest=5,
+        )
+        round_ten = Item.objects.create(
+            name="Apples",
+            markup_decay=2,
+            markup_growth=1.06,
+            markup_nearest=10,
+        )
+        # Initially no scheme, because no transactions, but it shouldn't
+        # explode
+        assert not round_five.markup_scheme
+        assert not round_ten.markup_scheme
+        # Create an inbound transaction to apply the formula to
+        acquisition = Transaction.objects.create(
+            item=round_five,
+            account=self.account,
+            purchaser=self.seller,
+            delta_quantity=200,
+            delta_balance=D(-2000),
+        )
+        round_five = round_five.markup_scheme
+        assert round_five
+        round_five = round_five.split(',')
+        assert len(round_five) == 8
+        assert "50.0@565.00" in round_five
+        assert "0.8@15.00" in round_five
+        for quantity, price in [t.split('@') for t in round_five]:
+            assert len(quantity.split('.')[1]) < 2
+            assert float(price) % 5 == 0
+        # Use the same transaction for round 10 calculation
+        acquisition.item = round_ten
+        acquisition.save()
+
+        round_ten = round_ten.markup_scheme
+        assert round_ten
+        round_ten = round_ten.split(',')
+        assert len(round_ten) == 8
+        assert "50.0@570.00" in round_ten
+        assert "0.8@20.00" in round_ten
+        for quantity, price in [t.split('@') for t in round_ten]:
+            assert len(quantity.split('.')[1]) < 2
+            assert float(price) % 10 == 0
+
 
 class PurchaserTest(BasicSetup, TestCase):
     def test_calculated_income(self):
