@@ -207,7 +207,7 @@ class InventoryItem(models.Model):
                 p = (p / self.markup_decay) * D(self.markup_growth)
                 r = D(int(p) / float(self.markup_nearest))
                 r = D((ceil(r) if r % p > 1 else r)) * D(self.markup_nearest)
-                yield "%s@%s" % (t, D(r))
+                yield "%.1f@%.2f" % (t, r)
         return ",".join(list(generate_tiers()))
 
 
