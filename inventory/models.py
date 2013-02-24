@@ -142,17 +142,7 @@ class InventoryItem(models.Model):
         """
         return D(self.total_acquired) * self.calculate_sold_value_per_unit()
 
-    def calculate_purchase_price(self):
-        """
-            Calculates the total value of this item at purchase.
-
-            Returns
-            -------
-            purchase_price : :class:`decimal.Decimal`
-                The total amount paid for this item
-        """
-        return abs(sum(t.delta_balance for t in self.inbound_transactions))
-
+    
     def calculate_shrink_at_cost(self):
         """
             Calculates the amount lost to shrink at cost.
@@ -198,6 +188,18 @@ class InventoryItem(models.Model):
                 A list of transactions where delta_quantity <= 0.
         """
         return self.transactions.filter(delta_quantity__lte=0)
+
+    @property
+    def purchase_price(self):
+        """
+            Calculates the total value of this item at purchase.
+
+            Returns
+            -------
+            purchase_price : :class:`decimal.Decimal`
+                The total amount paid for this item
+        """
+        return abs(sum(t.delta_balance for t in self.inbound_transactions))
 
     @property
     def total_acquired(self):
