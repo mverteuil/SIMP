@@ -151,7 +151,7 @@ class InventoryItem(models.Model):
             purchase_price : :class:`decimal.Decimal`
                 The total amount paid for this item
         """
-        return D(self.total_acquired) * self.calculate_purchased_value_per_unit()
+        return abs(sum(t.delta_balance for t in self.inbound_transactions))
 
     def calculate_shrink_at_cost(self):
         """
