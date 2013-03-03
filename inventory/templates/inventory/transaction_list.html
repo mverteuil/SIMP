@@ -13,18 +13,18 @@
         <th>Delta Balance</th>
         <th>Delete</th>
     </tr>
-    {% for transact in transactions %}
+    {% for transact in object_list %}
     <tr class="{{transact.transaction_code}}">
-        <td><a href="{% url transaction transact_id=transact.pk %}">{{ transact.timestamp }}</a></td>
+        <td><a href="{{ transact.get_absolute_url }}">{{ transact.timestamp }}</a></td>
         <td>{{ transact.transaction_code }}</td>
         <td>{{ transact.item.name }}</td>
         <td>{{ transact.account.name }}</td>
         <td>{{ transact.purchaser.name }}</td>
         <td class="number">{{ transact.delta_quantity|floatformat:1 }}</td>
         <td class="number">{{ transact.delta_balance|floatformat:2 }}</td>
-        <td><a href="{% url delete_transaction transact.pk %}">X</a></td>
+        <td><a href="{% url "transaction-delete" transact.pk %}">X</a></td>
     </tr>
     {% endfor %}
 </table>
-<a href="{% url transaction %}">Create New Transaction</a>
+<a href="{% url "transaction-create" %}">Create New Transaction</a>
 {% endblock content %}

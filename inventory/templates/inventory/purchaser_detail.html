@@ -1,0 +1,18 @@
+{% extends "section.html" %}
+{% block title_tag %}Account{% endblock %}
+{% block page_heading %}Account{% endblock %}
+{% block content %}
+<table class="basetable">
+    <tr>
+        <th>Name</th>
+        <th>Income</th>
+        <th>Consumption</th>
+    </tr>
+    <tr>
+        <td class="name middle">{{ purchaser.name }}</td>
+        <td class="middle">${{ purchaser.calculate_income|floatformat:2 }}</td>
+        <td class="middle">{{ purchaser.calculate_consumption|floatformat:2 }}</td>
+    </tr>
+</table>
+<a href="{% url "purchaser-update" purchaser.pk %}">Edit this Purchaser</a>
+{% endblock content %}

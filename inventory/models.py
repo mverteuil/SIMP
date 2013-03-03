@@ -7,6 +7,7 @@
 from decimal import Decimal as D
 from math import ceil
 
+from django.core.urlresolvers import reverse
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -61,6 +62,13 @@ class InventoryItem(models.Model):
                                                      MinValueValidator(0),
                                                      MaxValueValidator(9)
                                                  ],)
+
+    @classmethod
+    def get_list_url(self):
+        return reverse('inventoryitem-list')
+
+    def get_absolute_url(self):
+        return reverse('inventoryitem-details', kwargs=dict(pk=self.pk))
 
     def __unicode__(self):
         return self.name
@@ -305,6 +313,13 @@ class Account(models.Model):
                                           decimal_places=2,
                                           default=D('0.00'))
 
+    @classmethod
+    def get_list_url(self):
+        return reverse('account-list')
+
+    def get_absolute_url(self):
+        return reverse('account-details', kwargs=dict(pk=self.pk))
+
     def __unicode__(self):
         return self.name
 
@@ -363,6 +378,16 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(verbose_name="Timestamp",
                                      auto_now_add=True)
 
+    class Meta:
+        ordering = ["-timestamp"]
+
+    @classmethod
+    def get_list_url(self):
+        return reverse('transaction-list')
+
+    def get_absolute_url(self):
+        return reverse('transaction-details', kwargs=dict(pk=self.pk))
+
     @property
     def transaction_code(self):
         if self.delta_balance < 0:
@@ -393,6 +418,13 @@ class Purchaser(models.Model):
     name = models.CharField(verbose_name="Name",
                             max_length=64,
                             blank=False)
+
+    @classmethod
+    def get_list_url(self):
+        return reverse('purchaser-list')
+
+    def get_absolute_url(self):
+        return reverse('purchaser-details', kwargs=dict(pk=self.pk))
 
     def __unicode__(self):
         return self.name

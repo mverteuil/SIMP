@@ -6,6 +6,16 @@ from django.contrib import admin
 
 from simp import settings
 
+from inventory.views import DeleteView
+from inventory.views import MarkupDetailView
+from inventory.views import SectionCreateView
+from inventory.views import SectionDetailView
+from inventory.views import SectionListView
+from inventory.views import SectionUpdateView
+
+from inventory import models
+
+
 admin.autodiscover()
 
 urlpatterns = patterns(
@@ -24,41 +34,140 @@ urlpatterns = patterns(
 
     # SIMP URLs
     ## Accounts
-    url(r'^a/$', 'inventory.views.accounts', name='accounts'),
-    url(r'^a/(?P<account_id>\d+)/$',
-        'inventory.views.account', name='account'),
-    url(r'^a/create/$', 'inventory.views.account', name='account'),
+    url(r'^a/$',
+        SectionListView.as_view(
+            model=models.Account,
+        ),
+        name='account-list'),
+
+    url(r'^a/create/$',
+        SectionCreateView.as_view(
+            model=models.Account,
+            template_name="default_form.html",
+        ),
+        name='account-create'),
+
+    url(r'^a/(?P<pk>\d+)/$',
+        SectionDetailView.as_view(
+            model=models.Account,
+        ),
+        name='account-details'),
+
+    url(r'^a/(?P<pk>\d+)/update/$',
+        SectionUpdateView.as_view(
+            model=models.Account,
+            template_name="default_form.html",
+        ),
+        name='account-update'),
+
+    url(r'^a/(?P<pk>\d+)/delete/$',
+        DeleteView.as_view(
+            model=models.Account
+        ),
+        name='account-delete'),
 
     ## Inventory Items
     url(r'^i/$',
-        'inventory.views.inventoryitems',
-        name='inventoryitems'),
-
-    url(r'^i/(?P<item_id>\d+)/$',
-        'inventory.views.inventoryitem',
-        {'editor': False},
-        'inventoryitem_view'),
-
-    url(r'^i/(?P<item_id>\d+)/edit/$',
-        'inventory.views.inventoryitem',
-        {'editor': True},
-        'inventoryitem'),
+        SectionListView.as_view(
+            model=models.InventoryItem,
+        ),
+        name='inventoryitem-list'),
 
     url(r'^i/create/$',
-        'inventory.views.inventoryitem',
-        {'editor': True},
-        'inventoryitem'),
+        SectionCreateView.as_view(
+            model=models.InventoryItem,
+            template_name="default_form.html",
+        ),
+        name='inventoryitem-create'),
+
+    url(r'^i/(?P<pk>\d+)/$',
+        SectionDetailView.as_view(
+            model=models.InventoryItem,
+        ),
+        name='inventoryitem-details'),
+
+    url(r'^i/(?P<pk>\d+)/json/$',
+        MarkupDetailView.as_view(
+            model=models.InventoryItem,
+        ),
+        name='inventoryitem-json'),
+
+    url(r'^i/(?P<pk>\d+)/update/$',
+        SectionUpdateView.as_view(
+            model=models.InventoryItem,
+            template_name="default_form.html",
+        ),
+        name='inventoryitem-update'),
+
+    url(r'^i/(?P<pk>\d+)/delete/$',
+        DeleteView.as_view(
+            model=models.InventoryItem
+        ),
+        name='inventoryitem-delete'),
 
     ## Purchasers
-    url(r'^p/$', 'inventory.views.purchasers', name='purchasers'),
-    url(r'^p/(?P<p_id>\d+)/$', 'inventory.views.purchaser', name='purchaser'),
-    url(r'^p/create/$', 'inventory.views.purchaser', name='purchaser'),
+    url(r'^p/$',
+        SectionListView.as_view(
+            model=models.Purchaser,
+        ),
+        name='purchaser-list'),
+
+    url(r'^p/create/$',
+        SectionCreateView.as_view(
+            model=models.Purchaser,
+            template_name="default_form.html",
+        ),
+        name='purchaser-create'),
+
+    url(r'^p/(?P<pk>\d+)/$',
+        SectionDetailView.as_view(
+            model=models.Purchaser,
+        ),
+        name='purchaser-details'),
+
+    url(r'^p/(?P<pk>\d+)/update/$',
+        SectionUpdateView.as_view(
+            model=models.Purchaser,
+            template_name="default_form.html",
+        ),
+        name='purchaser-update'),
+
+    url(r'^p/(?P<pk>\d+)/delete/$',
+        DeleteView.as_view(
+            model=models.Purchaser
+        ),
+        name='purchaser-delete'),
 
     ## Transactions
-    url(r'^t/$', 'inventory.views.transactions', name='transactions'),
-    url(r'^t/(?P<transact_id>\d+)/$',
-        'inventory.views.transaction', name='transaction'),
-    url(r'^t/(?P<transact_id>\d+)/delete/$',
-        'inventory.views.delete_transaction', name='delete_transaction'),
-    url(r'^t/create/$', 'inventory.views.transaction', name='transaction'),
+    url(r'^t/$',
+        SectionListView.as_view(
+            model=models.Transaction,
+        ),
+        name='transaction-list'),
+
+    url(r'^t/create/$',
+        SectionCreateView.as_view(
+            model=models.Transaction,
+            template_name="inventory/transaction_form.html",
+        ),
+        name='transaction-create'),
+
+    url(r'^t/(?P<pk>\d+)/$',
+        SectionDetailView.as_view(
+            model=models.Transaction,
+        ),
+        name='transaction-details'),
+
+    url(r'^t/(?P<pk>\d+)/update/$',
+        SectionUpdateView.as_view(
+            model=models.Transaction,
+            template_name="inventory/transaction_form.html",
+        ),
+        name='transaction-update'),
+
+    url(r'^t/(?P<pk>\d+)/delete/$',
+        DeleteView.as_view(
+            model=models.Transaction
+        ),
+        name='transaction-delete'),
 )

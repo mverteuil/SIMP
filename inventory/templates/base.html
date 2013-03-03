@@ -26,10 +26,10 @@
 <h1>SIMP</h1>
     <nav>
         <ul>
-            <li class="{% if section == "accounts" %}current{%endif%}"><a href="{% url accounts %}">Accounts</a></li>
-            <li class="{% if section == "inventoryitems" %}current{%endif%}"><a href="{% url inventoryitems %}">Items</a></li>
-            <li class="{% if section == "purchasers" %}current{%endif%}"><a href="{% url purchasers %}">Purchasers</a></li>
-            <li class="{% if section == "transactions" %}current{%endif%}"><a href="{% url transactions %}">Transactions</a></li>
+            <li class="{% if section == "account" %}current{%endif%}"><a href="{% url "account-list" %}">Accounts</a></li>
+            <li class="{% if section == "inventoryitem" %}current{%endif%}"><a href="{% url "inventoryitem-list" %}">Items</a></li>
+            <li class="{% if section == "purchaser" %}current{%endif%}"><a href="{% url "purchaser-list" %}">Purchasers</a></li>
+            <li class="{% if section == "transaction" %}current{%endif%}"><a href="{% url "transaction-list" %}">Transactions</a></li>
         </ul>
     </nav>
 </header>

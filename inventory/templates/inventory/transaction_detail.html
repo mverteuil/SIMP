@@ -1,0 +1,28 @@
+{% extends "section.html" %}
+{% block title_tag %}Transaction{% endblock %}
+{% block page_heading %}Transaction{% endblock %}
+{% block content %}
+<table class="basetable">
+    <tr>
+        <th>Timestamp</th>
+        <th>Code</th>
+        <th>Item</th>
+        <th>Account</th>
+        <th>Purchaser</th>
+        <th>Delta Quantity</th>
+        <th>Delta Balance</th>
+        <th>Delete</th>
+    </tr>
+    <tr class="{{transaction.transaction_code}}">
+        <td>{{ transaction.timestamp }}</td>
+        <td>{{ transaction.transaction_code }}</td>
+        <td>{{ transaction.item.name }}</td>
+        <td>{{ transaction.account.name }}</td>
+        <td>{{ transaction.purchaser.name }}</td>
+        <td class="number">{{ transaction.delta_quantity|floatformat:1 }}</td>
+        <td class="number">{{ transaction.delta_balance|floatformat:2 }}</td>
+        <td><a href="{% url "transaction-delete" transaction.pk %}">X</a></td>
+    </tr>
+</table>
+<a href="{% url "transaction-update" transaction.pk %}">Edit this Transaction</a>
+{% endblock %}

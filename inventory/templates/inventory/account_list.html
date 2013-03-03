@@ -6,13 +6,15 @@
     <tr>
         <th>Name</th>
         <th>Balance</th>
+        <th>&nbsp;</th>
     </tr>
-    {% for account in accounts %}
+    {% for account in object_list %}
     <tr>
-        <td><a href="{% url account account_id=account.pk %}">{{ account.name }}</a></td>
+        <td><a href="{{ account.get_absolute_url }}">{{ account.name }}</a></td>
         <td>{{ account.calculate_balance|floatformat:2 }}</td>
+        <td><a href="{% url "account-delete" account.pk %}">X</a></td>
     </tr>
     {% endfor %}
 </table>
-<a href="{% url account %}">Create New Account</a>
+<a href="{% url "account-create" %}">Create New Account</a>
 {% endblock content %}
