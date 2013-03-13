@@ -1,0 +1,8 @@
+language: python
+python:
+    - "2.7"
+install: 
+    - "pip install -r requirements.pip --use-mirrors"
+    - "python setup.py -q install"
+env: "DJANGO_SETTINGS_MODULE=simp.settings"
+script: "python manage.py test"
