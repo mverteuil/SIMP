@@ -63,12 +63,16 @@ class InventoryItem(models.Model):
                                                      MaxValueValidator(9)
                                                  ],)
 
+    class Meta:
+        verbose_name = "Item"
+        verbose_name_plural = "Items"
+
     @classmethod
     def get_list_url(self):
-        return reverse('inventoryitem-list')
+        return reverse('inventory:inventoryitem_list')
 
     def get_absolute_url(self):
-        return reverse('inventoryitem-details', kwargs=dict(pk=self.pk))
+        return reverse('inventory:inventoryitem_details', kwargs=dict(pk=self.pk))
 
     def __unicode__(self):
         return self.name
@@ -313,12 +317,16 @@ class Account(models.Model):
                                           decimal_places=2,
                                           default=D('0.00'))
 
+    class Meta:
+        verbose_name = "Account"
+        verbose_name_plural = "Accounts"
+
     @classmethod
     def get_list_url(self):
-        return reverse('account-list')
+        return reverse('inventory:account_list')
 
     def get_absolute_url(self):
-        return reverse('account-details', kwargs=dict(pk=self.pk))
+        return reverse('inventory:account_details', kwargs=dict(pk=self.pk))
 
     def __unicode__(self):
         return self.name
@@ -379,14 +387,16 @@ class Transaction(models.Model):
                                      auto_now_add=True)
 
     class Meta:
+        verbose_name = "Transaction"
+        verbose_name_plural = "Transactions"
         ordering = ["-timestamp"]
 
     @classmethod
     def get_list_url(self):
-        return reverse('transaction-list')
+        return reverse('inventory:transaction_list')
 
     def get_absolute_url(self):
-        return reverse('transaction-details', kwargs=dict(pk=self.pk))
+        return reverse('inventory:transaction_details', kwargs=dict(pk=self.pk))
 
     @property
     def transaction_code(self):
@@ -419,12 +429,16 @@ class Purchaser(models.Model):
                             max_length=64,
                             blank=False)
 
+    class Meta:
+        verbose_name = "Purchaser"
+        verbose_name_plural = "Purchasers"
+
     @classmethod
     def get_list_url(self):
-        return reverse('purchaser-list')
+        return reverse('inventory:purchaser_list')
 
     def get_absolute_url(self):
-        return reverse('purchaser-details', kwargs=dict(pk=self.pk))
+        return reverse('inventory:purchaser_details', kwargs=dict(pk=self.pk))
 
     def __unicode__(self):
         return self.name
