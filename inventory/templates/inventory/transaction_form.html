@@ -27,7 +27,7 @@
             $("#id_item").change(
                 function(event)
                 {
-                    var item_id = event.currentTarget.selectedOptions[0].value;
+                    var item_id = event.currentTarget.item(event.currentTarget.selectedIndex).value;
                     if (!item_id) return;
                     $.ajax(
                     {
