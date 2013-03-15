@@ -1,20 +1,13 @@
-{% extends "section.html" %}
-{% block title_tag %}Purchasers{% endblock %}
-{% block page_heading %}Purchasers{% endblock %}
-{% block content %}
-<table class="basetable">
-    <tr>
-        <th>Name</th>
-        <th>Consumption</th>
-        <th>Income</th>
-    </tr>
-    {% for purchaser in object_list %}
-    <tr>
-        <td><a href="{{ purchaser.get_absolute_url }}">{{ purchaser.name }}</a></td>
-        <td class="number">{{ purchaser.calculate_consumption|floatformat:1 }}</td>
-        <td class="number">{{ purchaser.calculate_income|floatformat:2 }}</td>
-    </tr>
-    {% endfor %}
-</table>
-<a href="{% url "purchaser-create" %}">Create New Purchaser</a>
-{% endblock content %}
+{% extends "bootstrap/list.html" %}
+{% block thead %}
+<th>Name</th>
+<th>Consumption</th>
+<th>Income</th>
+{% endblock %}
+{% block each_tr %}
+<tr>
+    <td><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></td>
+    <td class="number">{{ object.calculate_consumption|floatformat:1 }}</td>
+    <td class="number">{{ object.calculate_income|floatformat:2 }}</td>
+</tr>
+{% endblock %}

@@ -1,17 +1,14 @@
-{% extends "section.html" %}
+{% extends "bootstrap/detail.html" %}
+{% load i18n %}
 {% load simptags %}
-{% block title_tag %}Item{% endblock %}
-{% block page_heading %}Item{% endblock %}
 {% block content %}
 {% with inventoryitem as item %}
-    <table class="basetable">
+    <table>
         <tr>
-            <th colspan="2">Name</th>
             <th>Markup Scheme</th>
             <th>Acquisition Dates</th>
         </tr>
         <tr>
-            <td class="name middle" colspan="2">{{ item.name }}</td>
             <td>{{ item.markup_scheme|render_markup_scheme|safe }}</td>
             <td class="middle">
                 {% for a_date in item.acquired %}
@@ -21,26 +18,32 @@
                 {% endfor %}
             </td>
         </tr>
+    </table>
+    <table>
         <tr>
-            <th colspan="2">Quantity Acquired</th>
+            <th>Quantity Acquired</th>
             <th>Quantity Sold</th>
             <th>Quantity Remaining</th>
         </tr>
         <tr>
-            <td colspan="2" class="number">{{ item.total_acquired }}</td>
+            <td class="number">{{ item.total_acquired }}</td>
             <td class="number">{{ item.total_sold }}</td>
             <td class="number">{{ item.calculate_quantity }}</td>
         </tr>
+    </table>
+    <table>
         <tr>
-            <th colspan="2">Shrink</th>
+            <th>Shrink</th>
             <th>Shrink Cost</th>
             <th>Shrink Potential</th>
         </tr>
         <tr>
-            <td colspan="2" class="number">{{ item.shrink_quantity }}</td>
+            <td class="number">{{ item.shrink_quantity }}</td>
             <td class="number">${{ item.calculate_shrink_at_cost|floatformat:0 }}</td>
             <td class="number">${{ item.calculate_shrink_at_potential|floatformat:0 }}</td>
         </tr>
+    </table>
+    <table>
         <tr>
             <th>Purchase Value</th>
             <th>Potential Value</th>

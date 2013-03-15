@@ -1,30 +1,23 @@
-{% extends "section.html" %}
-{% block title_tag %}Transactions{% endblock %}
-{% block page_heading %}Transactions{% endblock %}
-{% block content %}
-<table class="basetable">
-    <tr>
-        <th>Timestamp</th>
-        <th>Code</th>
-        <th>Item</th>
-        <th>Account</th>
-        <th>Purchaser</th>
-        <th>Delta Quantity</th>
-        <th>Delta Balance</th>
-        <th>Delete</th>
-    </tr>
-    {% for transact in object_list %}
-    <tr class="{{transact.transaction_code}}">
-        <td><a href="{{ transact.get_absolute_url }}">{{ transact.timestamp }}</a></td>
-        <td>{{ transact.transaction_code }}</td>
-        <td>{{ transact.item.name }}</td>
-        <td>{{ transact.account.name }}</td>
-        <td>{{ transact.purchaser.name }}</td>
-        <td class="number">{{ transact.delta_quantity|floatformat:1 }}</td>
-        <td class="number">{{ transact.delta_balance|floatformat:2 }}</td>
-        <td><a href="{% url "transaction-delete" transact.pk %}">X</a></td>
-    </tr>
-    {% endfor %}
-</table>
-<a href="{% url "transaction-create" %}">Create New Transaction</a>
-{% endblock content %}
+{% extends "bootstrap/list.html" %}
+{% block thead %}
+<th>Timestamp</th>
+<th>Code</th>
+<th>Item</th>
+<th>Account</th>
+<th>Purchaser</th>
+<th>Delta Quantity</th>
+<th>Delta Balance</th>
+<th>Delete</th>
+{% endblock %}
+{% block each_tr %}
+<tr class="{{object.objection_code}}">
+    <td><a href="{{ object.get_absolute_url }}">{{ object.timestamp }}</a></td>
+    <td>{{ object.transaction_code }}</td>
+    <td>{{ object.item.name }}</td>
+    <td>{{ object.account.name }}</td>
+    <td>{{ object.purchaser.name }}</td>
+    <td class="number">{{ object.delta_quantity|floatformat:1 }}</td>
+    <td class="number">{{ object.delta_balance|floatformat:2 }}</td>
+    <td><a href="{% url "inventory:transaction_delete" object.pk %}">X</a></td>
+</tr>
+{% endblock %}

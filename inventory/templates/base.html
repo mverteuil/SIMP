@@ -1,43 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{% block title_tag %}SIMP{% endblock %}</title>
-    {% block persistent_scripts %}
-    <script type="text/javascript"
-            src="/static/js/jquery-1.9.0.js"></script>
-    <script type="text/javascript"
-            src="/static/js/jquery-ui-1.10.0.custom.min.js"></script>
-    {% endblock %}
-    {% block page_scripts %}
-    {% endblock %}
-    {% block persistent_styles %}
-    <link rel="stylesheet"
-          media="screen"
-          href="/static/css/simp.css" />
-    <link rel="stylesheet"
-          media="screen"
-          href="/static/css/theme/jquery-ui-1.10.0.custom.min.css" />
-    {% endblock %}
-    {% block page_styles %}
-    {% endblock %}
-</head>
-<body class="{% block body_class %}{% endblock %}">
-<header>
-<h1>SIMP</h1>
-    <nav>
-        <ul>
-            <li class="{% if section == "account" %}current{%endif%}"><a href="{% url "account-list" %}">Accounts</a></li>
-            <li class="{% if section == "inventoryitem" %}current{%endif%}"><a href="{% url "inventoryitem-list" %}">Items</a></li>
-            <li class="{% if section == "purchaser" %}current{%endif%}"><a href="{% url "purchaser-list" %}">Purchasers</a></li>
-            <li class="{% if section == "transaction" %}current{%endif%}"><a href="{% url "transaction-list" %}">Transactions</a></li>
-        </ul>
-    </nav>
-</header>
-<div class="content">
-{% block page_head %}
+{% extends "bootstrap/bootstrap_base.html" %}
+{% block topbar_container %}
+<h3><a href="#">SIMP</a></h3>
+<ul>
+    <li class="{% if section == "account" %}current{%endif%}"><a href="{% url "inventory:account_list" %}">Accounts</a></li>
+    <li class="{% if section == "inventoryitem" %}current{%endif%}"><a href="{% url "inventory:inventoryitem_list" %}">Items</a></li>
+    <li class="{% if section == "purchaser" %}current{%endif%}"><a href="{% url "inventory:purchaser_list" %}">Purchasers</a></li>
+    <li class="{% if section == "transaction" %}current{%endif%}"><a href="{% url "inventory:transaction_list" %}">Transactions</a></li>
+</ul>
 {% endblock %}
-{% block content %}
-{% endblock %}
-</div>
-</body>
-</html>

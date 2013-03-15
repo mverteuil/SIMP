@@ -1,4 +1,9 @@
-{% extends "section.html" %}
+{% extends "base.html" %}
+{% load i18n %}
+{% block page_header %}
+    <h1>{% blocktrans with model_verbose_name|lower as object_name %}Edit {{ object_name }}{% endblocktrans %}</h1>
+{% endblock %}
+
 {% block title_tag %}Account{% endblock %}
 {% block page_heading %}Account{% endblock %}
 {% block content %}

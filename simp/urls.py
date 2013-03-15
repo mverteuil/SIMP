@@ -8,7 +8,6 @@ from simp import settings
 
 admin.autodiscover()
 
-
 urlpatterns = patterns(
     '',
 

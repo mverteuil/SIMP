@@ -1,8 +1,7 @@
-{% extends "section.html" %}
-{% block title_tag %}Account{% endblock %}
-{% block page_heading %}Account{% endblock %}
+{% extends "bootstrap/detail.html" %}
+{% load i18n %}
 {% block content %}
-<table class="basetable">
+<table>
     <tr>
         <th>Name</th>
         <th>Income</th>
@@ -13,6 +12,6 @@
         <td class="middle">${{ purchaser.calculate_income|floatformat:2 }}</td>
         <td class="middle">{{ purchaser.calculate_consumption|floatformat:2 }}</td>
     </tr>
+    </tr>
 </table>
-<a href="{% url "inventory:purchaser_form" purchaser.pk %}">Edit this Purchaser</a>
-{% endblock content %}
+{% endblock %}

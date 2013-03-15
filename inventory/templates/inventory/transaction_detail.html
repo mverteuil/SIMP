@@ -1,8 +1,7 @@
-{% extends "section.html" %}
-{% block title_tag %}Transaction{% endblock %}
-{% block page_heading %}Transaction{% endblock %}
+{% extends "bootstrap/detail.html" %}
+{% load i18n %}
 {% block content %}
-<table class="basetable">
+<table>
     <tr>
         <th>Timestamp</th>
         <th>Code</th>
@@ -11,7 +10,6 @@
         <th>Purchaser</th>
         <th>Delta Quantity</th>
         <th>Delta Balance</th>
-        <th>Delete</th>
     </tr>
     <tr class="{{transaction.transaction_code}}">
         <td>{{ transaction.timestamp }}</td>
@@ -21,8 +19,6 @@
         <td>{{ transaction.purchaser.name }}</td>
         <td class="number">{{ transaction.delta_quantity|floatformat:1 }}</td>
         <td class="number">{{ transaction.delta_balance|floatformat:2 }}</td>
-        <td><a href="{% url "inventory:transaction_delete" transaction.pk %}">X</a></td>
     </tr>
 </table>
-<a href="{% url "inventory:transaction_form" transaction.pk %}">Edit this Transaction</a>
 {% endblock %}
