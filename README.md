@@ -22,3 +22,8 @@ Installation
   1. Run the server
      `python manage.py runserver 0:8000`
   1. Navigate to the running server at http://localhost:8000/admin/
+
+
+Build Status
+------------
+[![Build Status](https://travis-ci.org/mverteuil/SIMP.png?branch=master)](https://travis-ci.org/mverteuil/SIMP)
