@@ -4,4 +4,6 @@ python:
 install: 
     - "pip install -r requirements.pip --use-mirrors"
 env: "DJANGO_SETTINGS_MODULE=simp.settings"
-script: "python manage.py test"
+script:
+    - "cd simp"
+    - "django-admin.py test -- --cov inventory"

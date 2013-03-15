@@ -9,11 +9,11 @@ coverage==3.6
 django-annoying==0.7.7
 docutils==0.10
 flake8==1.7.0
-ipdb==0.7
-ipython==0.13.1
 numpydoc==0.4
 py==1.4.12
 pytest==2.3.4
 pytest-cov==1.6
-git+git://github.com/mverteuil/pytest-ipdb.git
+pytest-django==2.2.0
+git+git://github.com/buchuki/django-pytest.git#egg=django-pytest
+git+git://github.com/mverteuil/django-bootstrap.git#egg=bootstrap
 wsgiref==0.1.2
