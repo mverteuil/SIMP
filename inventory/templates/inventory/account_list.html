@@ -1,20 +1,13 @@
-{% extends "section.html" %}
-{% block title_tag %}Accounts{% endblock %}
-{% block page_heading %}Accounts{% endblock %}
-{% block content %}
-<table class="basetable">
-    <tr>
-        <th>Name</th>
-        <th>Balance</th>
-        <th>&nbsp;</th>
-    </tr>
-    {% for account in object_list %}
-    <tr>
-        <td><a href="{{ account.get_absolute_url }}">{{ account.name }}</a></td>
-        <td>{{ account.calculate_balance|floatformat:2 }}</td>
-        <td><a href="{% url "account-delete" account.pk %}">X</a></td>
-    </tr>
-    {% endfor %}
-</table>
-<a href="{% url "account-create" %}">Create New Account</a>
-{% endblock content %}
+{% extends "listbase.html" %}
+{% block thead %}
+<th>Name</th>
+<th>Balance</th>
+<th>&nbsp;</th>
+{% endblock %}
+{% block each_tr %}
+<tr>
+    <td><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></td>
+    <td>{{ object.calculate_balance|floatformat:2 }}</td>
+    <td><a href="{% url "inventory:account_delete" object.pk %}">X</a></td>
+</tr>
+{% endblock %}

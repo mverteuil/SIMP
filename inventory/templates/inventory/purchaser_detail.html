@@ -14,5 +14,5 @@
         <td class="middle">{{ purchaser.calculate_consumption|floatformat:2 }}</td>
     </tr>
 </table>
-<a href="{% url "purchaser-update" purchaser.pk %}">Edit this Purchaser</a>
+<a href="{% url "inventory:purchaser_form" purchaser.pk %}">Edit this Purchaser</a>
 {% endblock content %}

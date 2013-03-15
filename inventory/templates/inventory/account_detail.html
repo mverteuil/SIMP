@@ -12,5 +12,5 @@
         <td class="middle">${{ account.calculate_balance|floatformat:2 }}</td>
     </tr>
 </table>
-<a href="{% url "account-update" account.pk %}">Edit this Item</a>
+<a href="{% url "inventory:account_form" account.pk %}">Edit this Item</a>
 {% endblock content %}

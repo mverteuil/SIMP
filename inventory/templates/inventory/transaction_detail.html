@@ -21,8 +21,8 @@
         <td>{{ transaction.purchaser.name }}</td>
         <td class="number">{{ transaction.delta_quantity|floatformat:1 }}</td>
         <td class="number">{{ transaction.delta_balance|floatformat:2 }}</td>
-        <td><a href="{% url "transaction-delete" transaction.pk %}">X</a></td>
+        <td><a href="{% url "inventory:transaction_delete" transaction.pk %}">X</a></td>
     </tr>
 </table>
-<a href="{% url "transaction-update" transaction.pk %}">Edit this Transaction</a>
+<a href="{% url "inventory:transaction_form" transaction.pk %}">Edit this Transaction</a>
 {% endblock %}

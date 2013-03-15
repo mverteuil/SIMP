@@ -54,6 +54,6 @@
             <td class="number">${{ item.calculate_profit|floatformat:2 }}</td>
         </tr>
     </table>
-    <a href="{% url "inventoryitem-update" item.pk %}">Edit this Item</a>
+    <a href="{% url "inventory:inventoryitem_form" item.pk %}">Edit this Item</a>
 {% endwith %}
 {% endblock content %}
