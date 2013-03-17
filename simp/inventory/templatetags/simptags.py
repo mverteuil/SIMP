@@ -18,8 +18,8 @@ def generate_markup_link_list(item):
         representation of that markup rate
     """
     if ',' in item.markup_scheme:
-        for rate in item.markup_scheme.split(','):
-            link = "%s?i=%s&q=%s&b=%s" % (reverse('inventory:transaction_form'),
+        for rate in reversed(item.markup_scheme.split(',')):
+            link = "%s?i=%s&q=-%s&b=%s" % (reverse('inventory:transaction_form'),
                                           item.pk,
                                           rate.split('@')[0],
                                           rate.split('@')[1])
@@ -30,7 +30,7 @@ def generate_markup_link_list(item):
 def render_markup_scheme(item):
     """ Formats the markup scheme for easy review """
     return "".join([
-        '<a href="%s" class="btn btn-mini">%s</span>' % (link, label)
+        '<a href="%s" class="btn btn-mini">%s</a>' % (link, label)
         for link, label in generate_markup_link_list(item)])
 
 
