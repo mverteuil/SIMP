@@ -14,12 +14,12 @@
 <tr class="{{object.objection_code}}">
     <td><a href="{{ object.get_absolute_url }}">{{ object.timestamp }}</a></td>
     <td>{{ object.transaction_code }}</td>
-    <td>{{ object.item.name }}</td>
-    <td>{{ object.account.name }}</td>
-    <td>{{ object.purchaser.name }}</td>
+    <td><a href="{{ object.item.get_absolute_url }}">{{ object.item.name }}</a></td>
+    <td><a href="{{ object.account.get_absolute_url }}">{{ object.account.name }}</a></td>
+    <td><a href="{{ object.purchaser.get_absolute_url }}">{{ object.purchaser.name }}</a></td>
     <td class="number">{{ object.delta_quantity|floatformat:1 }}</td>
     <td class="number">{{ object.delta_balance|floatformat:2 }}</td>
-    <td><a class="label" href="{% url "inventory:transaction_form" %}{{object|clone_transaction_querystring}}">Clone</a>
-    <a class="label" href="{% url "inventory:transaction_delete" object.pk %}">Delete</a></td>
+    <td><a class="label label-info" href="{% url "inventory:transaction_form" %}{{object|clone_transaction_querystring}}">Clone</a>
+    <a class="label label-danger" href="{% url "inventory:transaction_delete" object.pk %}">Delete</a></td>
 </tr>
 {% endblock %}

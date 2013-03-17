@@ -1,14 +1,14 @@
 {% extends "bootstrap/detail.html" %}
 {% load i18n %}
 {% block content %}
-<table class="table table-condensed">
+<table class="table">
     <tr>
         <th>Name</th>
         <th>Balance</th>
     </tr>
     <tr>
-        <td class="name middle">{{ account.name }}</td>
-        <td class="middle">${{ account.calculate_balance|floatformat:2 }}</td>
+        <td>{{ account.name }}</td>
+        <td>${{ account.calculate_balance|floatformat:2 }}</td>
     </tr>
 </table>
 {% endblock content %}

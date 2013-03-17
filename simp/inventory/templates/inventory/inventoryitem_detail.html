@@ -3,60 +3,62 @@
 {% load simptags %}
 {% block content %}
 {% with inventoryitem as item %}
-    <table>
-        <tr>
-            <th>Markup Scheme</th>
-            <th>Acquisition Dates</th>
-        </tr>
-        <tr>
-            <td>{{ item|render_markup_scheme|safe }}</td>
-            <td class="middle">
-                {% for a_date in item.acquired %}
-                    {{ a_date }}<br />
-                {% empty %}
-                    Never
-                {% endfor %}
-            </td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <th>Quantity Acquired</th>
-            <th>Quantity Sold</th>
-            <th>Quantity Remaining</th>
-        </tr>
-        <tr>
-            <td class="number">{{ item.total_acquired }}</td>
-            <td class="number">{{ item.total_sold }}</td>
-            <td class="number">{{ item.calculate_quantity }}</td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <th>Shrink</th>
-            <th>Shrink Cost</th>
-            <th>Shrink Potential</th>
-        </tr>
-        <tr>
-            <td class="number">{{ item.shrink_quantity }}</td>
-            <td class="number">${{ item.calculate_shrink_at_cost|floatformat:0 }}</td>
-            <td class="number">${{ item.calculate_shrink_at_potential|floatformat:0 }}</td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <th>Purchase Value</th>
-            <th>Potential Value</th>
-            <th>Recovered Value</th>
-            <th>Profit</th>
-        </tr>
-        <tr>
-            <td class="number">${{ item.purchase_price|floatformat:2 }}</td>
-            <td class="number">${{ item.calculate_potential_value|floatformat:-2}}</td>
-            <td class="number">${{ item.total_recovered|floatformat:2 }}</td>
-            <td class="number">${{ item.calculate_profit|floatformat:2 }}</td>
-        </tr>
-    </table>
-    <a href="{% url "inventory:inventoryitem_form" item.pk %}">Edit this Item</a>
+<div class="row">
+    <div class="span6">
+        <h3>Transaction Shortcuts</h3>
+        {{ item|render_markup_scheme|safe }}
+    </div>
+    <div class="span6">
+        <h4>Acquisition Dates</h3>
+        <ul>
+            {% for a_date in item.acquired %}
+                <li>{{ a_date }}</li>
+            {% empty %}
+                <li>{% trans 'Never' %}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="row">&nbsp;</div>
+<div class="row">
+    <table class="table span8">
+    <tr>
+        <th class="span2">Purchase Value</th>
+        <th class="span2">Potential Value</th>
+        <th class="span2">Recovered Value</th>
+        <th class="span2">Profit</th>
+    </tr>
+    <tr>
+        <td>${{ item.purchase_price|floatformat:2 }}</td>
+        <td>${{ item.calculate_potential_value|floatformat:-2}}</td>
+        <td>${{ item.total_recovered|floatformat:2 }}</td>
+        <td>${{ item.calculate_profit|floatformat:2 }}</td>
+    </tr>
+</table>
+<table class="table span8 table-bordered">
+    <tr>
+        <th rowspan="2" class="span2">Quantity</th>
+        <th class="span2">Quantity Acquired</th>
+        <th class="span2">Quantity Sold</th>
+        <th class="span2">Quantity Remaining</th>
+    </tr>
+    <tr>
+        <td>{{ item.total_acquired }}</td>
+        <td>{{ item.total_sold }}</td>
+        <td>{{ item.calculate_quantity }}</td>
+    </tr>
+    <tr>
+        <th rowspan="2">Shrink</th>
+        <th>Shrink</th>
+        <th>Shrink Cost</th>
+        <th>Shrink Potential</th>
+    </tr>
+    <tr>
+        <td>{{ item.shrink_quantity }}</td>
+        <td>${{ item.calculate_shrink_at_cost|floatformat:0 }}</td>
+        <td>${{ item.calculate_shrink_at_potential|floatformat:0 }}</td>
+    </tr>
+</table>
+</div>
 {% endwith %}
 {% endblock content %}

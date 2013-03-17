@@ -1,7 +1,12 @@
 {% extends "bootstrap/detail.html" %}
 {% load i18n %}
+{% load simptags %}
+{% block button_bar %}
+<a class="btn" href="{% url "inventory:transaction_form" %}{{object|clone_transaction_querystring}}">Clone</a>
+{{ block.super }}
+{% endblock %}
 {% block content %}
-<table>
+<table class="table">
     <tr>
         <th>Timestamp</th>
         <th>Code</th>

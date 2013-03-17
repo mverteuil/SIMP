@@ -1,16 +1,16 @@
 {% extends "bootstrap/detail.html" %}
 {% load i18n %}
 {% block content %}
-<table>
+<table class="table">
     <tr>
         <th>Name</th>
         <th>Income</th>
         <th>Consumption</th>
     </tr>
     <tr>
-        <td class="name middle">{{ purchaser.name }}</td>
-        <td class="middle">${{ purchaser.calculate_income|floatformat:2 }}</td>
-        <td class="middle">{{ purchaser.calculate_consumption|floatformat:2 }}</td>
+        <td>{{ purchaser.name }}</td>
+        <td>${{ purchaser.calculate_income|floatformat:2 }}</td>
+        <td>{{ purchaser.calculate_consumption|floatformat:2 }}</td>
     </tr>
     </tr>
 </table>
