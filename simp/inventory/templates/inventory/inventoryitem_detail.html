@@ -9,7 +9,7 @@
             <th>Acquisition Dates</th>
         </tr>
         <tr>
-            <td>{{ item.markup_scheme|render_markup_scheme|safe }}</td>
+            <td>{{ item|render_markup_scheme|safe }}</td>
             <td class="middle">
                 {% for a_date in item.acquired %}
                     {{ a_date }}<br />

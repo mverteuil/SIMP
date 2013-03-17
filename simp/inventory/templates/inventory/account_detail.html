@@ -1,13 +1,7 @@
-{% extends "base.html" %}
+{% extends "bootstrap/detail.html" %}
 {% load i18n %}
-{% block page_header %}
-    <h1>{% blocktrans with model_verbose_name|lower as object_name %}Edit {{ object_name }}{% endblocktrans %}</h1>
-{% endblock %}
-
-{% block title_tag %}Account{% endblock %}
-{% block page_heading %}Account{% endblock %}
 {% block content %}
-<table class="basetable">
+<table class="table table-condensed">
     <tr>
         <th>Name</th>
         <th>Balance</th>
@@ -17,5 +11,4 @@
         <td class="middle">${{ account.calculate_balance|floatformat:2 }}</td>
     </tr>
 </table>
-<a href="{% url "inventory:account_form" account.pk %}">Edit this Item</a>
 {% endblock content %}

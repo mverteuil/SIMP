@@ -5,17 +5,34 @@
     .. moduleauthor:: Matthew de Verteuil <mverteuil@github.com>
 """
 from django import template
+from django.core.urlresolvers import reverse
 
 
 register = template.Library()
 
 
+def generate_markup_link_list(item):
+    """
+        Generates a list of tuples, each tuple containing a link to create a
+        new transaction at the markup rate specified as well as a string
+        representation of that markup rate
+    """
+    if ',' in item.markup_scheme:
+        for rate in item.markup_scheme.split(','):
+            link = "%s?i=%s&q=%s&b=%s" % (reverse('inventory:transaction_form'),
+                                          item.pk,
+                                          rate.split('@')[0],
+                                          rate.split('@')[1])
+            yield (link, rate)
+
+
 @register.filter
-def render_markup_scheme(schema):
+def render_markup_scheme(item):
     """ Formats the markup scheme for easy review """
     return "".join([
-        "<span class='markup-bubble'>%s</span>" % scheme
-        for scheme in schema.split(",")])
+        '<a href="%s" class="btn btn-mini">%s</span>' % (link, label)
+        for link, label in generate_markup_link_list(item)])
+
 
 @register.filter
 def clone_transaction_querystring(transaction):

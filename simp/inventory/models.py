@@ -72,7 +72,7 @@ class InventoryItem(models.Model):
         return reverse('inventory:inventoryitem_list')
 
     def get_absolute_url(self):
-        return reverse('inventory:inventoryitem_details', kwargs=dict(pk=self.pk))
+        return reverse('inventory:inventoryitem_detail', kwargs=dict(pk=self.pk))
 
     def __unicode__(self):
         return self.name
@@ -326,7 +326,7 @@ class Account(models.Model):
         return reverse('inventory:account_list')
 
     def get_absolute_url(self):
-        return reverse('inventory:account_details', kwargs=dict(pk=self.pk))
+        return reverse('inventory:account_detail', kwargs=dict(pk=self.pk))
 
     def __unicode__(self):
         return self.name
@@ -396,7 +396,7 @@ class Transaction(models.Model):
         return reverse('inventory:transaction_list')
 
     def get_absolute_url(self):
-        return reverse('inventory:transaction_details', kwargs=dict(pk=self.pk))
+        return reverse('inventory:transaction_detail', kwargs=dict(pk=self.pk))
 
     @property
     def transaction_code(self):
@@ -438,7 +438,7 @@ class Purchaser(models.Model):
         return reverse('inventory:purchaser_list')
 
     def get_absolute_url(self):
-        return reverse('inventory:purchaser_details', kwargs=dict(pk=self.pk))
+        return reverse('inventory:purchaser_detail', kwargs=dict(pk=self.pk))
 
     def __unicode__(self):
         return self.name

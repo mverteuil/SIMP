@@ -1,7 +1,7 @@
-from django.conf.urls import (patterns,
-                              url)
-
 from bootstrap import urls as bootstrap_urls
+
+from django.conf.urls import patterns, url
+
 
 from .forms import (AccountForm,
                     InventoryItemForm,
