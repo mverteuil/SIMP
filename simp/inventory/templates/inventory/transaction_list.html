@@ -20,6 +20,6 @@
     <td class="number">{{ object.delta_quantity|floatformat:1 }}</td>
     <td class="number">{{ object.delta_balance|floatformat:2 }}</td>
     <td><a class="label label-info" href="{% url "inventory:transaction_form" %}{{object|clone_transaction_querystring}}">Clone</a>
-    <a class="label label-danger" href="{% url "inventory:transaction_delete" object.pk %}">Delete</a></td>
+    <a class="label label-important" href="{% url "inventory:transaction_delete" object.pk %}">Delete</a></td>
 </tr>
 {% endblock %}
