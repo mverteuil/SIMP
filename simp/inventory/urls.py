@@ -1,23 +1,26 @@
-from django.conf.urls import patterns
-from django.conf.urls import url
+from django.conf.urls import (patterns,
+                              url)
 
-from bootstrap.urls import bootstrap_patterns
+from bootstrap import urls as bootstrap_urls
 
-from .forms import AccountForm
-from .forms import InventoryItemForm
-from .forms import PurchaserForm
-from .forms import TransactionForm
-
+from .forms import (AccountForm,
+                    InventoryItemForm,
+                    PurchaserForm,
+                    TransactionForm)
 from .models import InventoryItem
-from .views import MarkupDetailView
+from .views import (MarkupDetailView,
+                    CreateView)
 
 
-urlpatterns = bootstrap_patterns(AccountForm)
-urlpatterns += bootstrap_patterns(InventoryItemForm)
-urlpatterns += bootstrap_patterns(PurchaserForm)
-urlpatterns += bootstrap_patterns(TransactionForm)
+urlpatterns = bootstrap_urls.bootstrap_patterns(AccountForm, InventoryItemForm, PurchaserForm)
+urlpatterns += bootstrap_urls.bootstrap_pattern(TransactionForm, create_view=None)
 urlpatterns += patterns(
     '',
+    url(
+        r'^transaction/add/$',
+        CreateView.as_view(form_class=TransactionForm),
+        name="transaction_form"
+    ),
     url(
         r'^inventoryitem/(?P<pk>\d+)/json/$',
         MarkupDetailView.as_view(model=InventoryItem),

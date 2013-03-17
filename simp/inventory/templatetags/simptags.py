@@ -16,3 +16,18 @@ def render_markup_scheme(schema):
     return "".join([
         "<span class='markup-bubble'>%s</span>" % scheme
         for scheme in schema.split(",")])
+
+@register.filter
+def clone_transaction_querystring(transaction):
+    """
+        Returns the query string for adding a new transaction with properties
+        equal to the one supplied
+    """
+    query = []
+    query.append('?i=%s' % transaction.item.pk)
+    query.append('a=%s' % transaction.account.pk)
+    if transaction.purchaser:
+        query.append('p=%s' % transaction.purchaser.pk)
+    query.append('q=%s' % transaction.delta_quantity)
+    query.append('b=%s' % transaction.delta_balance)
+    return "&".join(query)

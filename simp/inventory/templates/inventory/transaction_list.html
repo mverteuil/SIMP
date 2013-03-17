@@ -1,4 +1,5 @@
 {% extends "bootstrap/list.html" %}
+{% load simptags %}
 {% block thead %}
 <th>Timestamp</th>
 <th>Code</th>
@@ -7,7 +8,7 @@
 <th>Purchaser</th>
 <th>Delta Quantity</th>
 <th>Delta Balance</th>
-<th>Delete</th>
+<th>Actions</th>
 {% endblock %}
 {% block each_tr %}
 <tr class="{{object.objection_code}}">
@@ -18,6 +19,7 @@
     <td>{{ object.purchaser.name }}</td>
     <td class="number">{{ object.delta_quantity|floatformat:1 }}</td>
     <td class="number">{{ object.delta_balance|floatformat:2 }}</td>
-    <td><a href="{% url "inventory:transaction_delete" object.pk %}">X</a></td>
+    <td><a class="label" href="{% url "inventory:transaction_form" %}{{object|clone_transaction_querystring}}">Clone</a>
+    <a class="label" href="{% url "inventory:transaction_delete" object.pk %}">Delete</a></td>
 </tr>
 {% endblock %}
