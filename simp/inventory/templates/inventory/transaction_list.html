@@ -12,7 +12,7 @@
 <th>{% trans "Actions" %}</th>
 {% endblock %}
 {% block each_tr %}
-<tr class="{{object.objection_code}}">
+<tr class="{{object.transaction_code}}">
     <td><a href="{{ object.get_absolute_url }}">{{ object.timestamp }}</a></td>
     <td>{{ object.transaction_code }}</td>
     <td><a href="{{ object.item.get_absolute_url }}">{{ object.item.name }}</a></td>
