@@ -5,14 +5,17 @@
 <table class="table">
     <tr>
         <th>{% trans "Name" %}</th>
-        <th>{% trans "Income" %}</th>
         <th>{% trans "Consumption" %}</th>
+        <th>{% trans "Income" %}</th>
+        <th>{% trans "Accumulation" %}</th>
+        <th>{% trans "Expenses" %}</th>
     </tr>
     <tr>
         <td>{{ purchaser.name }}</td>
-        <td>${{ purchaser.calculate_income|floatformat:2 }}</td>
-        <td>{{ purchaser.calculate_consumption|floatformat:2 }}</td>
-    </tr>
+        <td class="number">{{ object.calculate_consumption|floatformat:1 }}</td>
+        <td class="number">{{ object.calculate_income|floatformat:2 }}</td>
+        <td class="number">{{ object.calculate_accumulation|floatformat:1 }}</td>
+        <td class="number">{{ object.calculate_expenses|floatformat:2 }}</td>
     </tr>
 </table>
 <h2>{% trans "Related Transactions" %}</h2>

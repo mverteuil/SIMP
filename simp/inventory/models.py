@@ -72,7 +72,8 @@ class InventoryItem(models.Model):
         return reverse('inventory:inventoryitem_list')
 
     def get_absolute_url(self):
-        return reverse('inventory:inventoryitem_detail', kwargs=dict(pk=self.pk))
+        return reverse('inventory:inventoryitem_detail',
+                       kwargs=dict(pk=self.pk))
 
     def __unicode__(self):
         return self.name
@@ -163,7 +164,8 @@ class InventoryItem(models.Model):
             shrink_at_cost : :class:`decimal.Decimal`
                 The value lost to shrink if calculated at cost
         """
-        return D(self.shrink_quantity) * self.calculate_purchased_value_per_unit()
+        return (D(self.shrink_quantity) *
+                self.calculate_purchased_value_per_unit())
 
     def calculate_shrink_at_potential(self):
         """
@@ -178,7 +180,7 @@ class InventoryItem(models.Model):
 
     def calculate_profit(self):
         """
-            Calculates amount recovered through sales that exceeds 
+            Calculates amount recovered through sales that exceeds
             the purchase price
 
             Returns
@@ -457,6 +459,20 @@ class Purchaser(models.Model):
                     Transaction.objects.filter(purchaser=self)
                     if t.delta_balance > 0])
 
+    def calculate_expenses(self):
+        """
+            Sums the transaction balances where this purchaser was the seller
+
+            Returns
+            -------
+            calculated_expenses : :class:`decimal.Decimal`
+                The sum of transaction.delta_balance for which this purchaser
+                was the seller
+        """
+        return sum([t.delta_balance for t in
+                    Transaction.objects.filter(purchaser=self)
+                    if t.delta_balance < 0])
+
     def calculate_consumption(self):
         """
             Sums the transaction quantities where this purchaser was the buyer
@@ -470,3 +486,17 @@ class Purchaser(models.Model):
         return abs(sum([t.delta_quantity for t in
                         Transaction.objects.filter(purchaser=self)
                         if t.delta_quantity < 0]))
+
+    def calculate_accumulation(self):
+        """
+            Sums the transaction quantities where this purchaser was the seller
+
+            Returns
+            -------
+            calculated_accumulation : `float`
+                The sume of transaction.delta_quantity for which this purchaser
+                was the seller
+        """
+        return abs(sum([t.delta_quantity for t in
+                        Transaction.objects.filter(purchaser=self)
+                        if t.delta_quantity > 0]))

@@ -232,6 +232,14 @@ class PurchaserTest(BasicSetup, TestCase):
         assert self.seller.calculate_income() == 0
         assert self.buyer.calculate_income() == 50
 
+    def test_calculated_expenses(self):
+        assert self.seller.calculate_expenses() == -25
+        assert self.buyer.calculate_expenses() == 0
+
     def test_calculated_consumption(self):
         assert self.seller.calculate_consumption() == 0
         assert self.buyer.calculate_consumption() == 50
+
+    def test_calculated_accumulation(self):
+        assert self.seller.calculate_accumulation() == 50
+        assert self.buyer.calculate_accumulation() == 0

@@ -4,11 +4,15 @@
 <th>{% trans "Name" %}</th>
 <th>{% trans "Consumption" %}</th>
 <th>{% trans "Income" %}</th>
+<th>{% trans "Accumulation" %}</th>
+<th>{% trans "Expenses" %}</th>
 {% endblock %}
 {% block each_tr %}
 <tr>
     <td><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></td>
     <td class="number">{{ object.calculate_consumption|floatformat:1 }}</td>
     <td class="number">{{ object.calculate_income|floatformat:2 }}</td>
+    <td class="number">{{ object.calculate_accumulation|floatformat:1 }}</td>
+    <td class="number">{{ object.calculate_expenses|floatformat:2 }}</td>
 </tr>
 {% endblock %}
