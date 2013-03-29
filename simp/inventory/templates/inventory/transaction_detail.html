@@ -19,9 +19,9 @@
     <tr class="{{transaction.transaction_code}}">
         <td>{{ transaction.timestamp }}</td>
         <td>{{ transaction.transaction_code }}</td>
-        <td>{{ transaction.item.name }}</td>
-        <td>{{ transaction.account.name }}</td>
-        <td>{{ transaction.purchaser.name }}</td>
+        <td><a href="{{ object.item.get_absolute_url }}">{{ object.item.name }}</a></td>
+        <td><a href="{{ object.account.get_absolute_url }}">{{ object.account.name }}</a></td>
+        <td><a href="{{ object.purchaser.get_absolute_url }}">{{ object.purchaser.name }}</a></td>
         <td class="number">{{ transaction.delta_quantity|floatformat:1 }}</td>
         <td class="number">{{ transaction.delta_balance|floatformat:2 }}</td>
     </tr>
