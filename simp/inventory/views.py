@@ -6,8 +6,7 @@
 """
 import json
 
-from bootstrap.views import (CreateView as BaseCreateView,
-                             UpdateView as BaseUpdateView)
+from bootstrap.views import CreateView as BaseCreateView
 
 from django.http import HttpResponse
 from django.views.generic.detail import BaseDetailView
@@ -15,6 +14,7 @@ from django.views.generic.detail import BaseDetailView
 from .models import (Account,
                      InventoryItem,
                      Purchaser)
+
 
 class MarkupResponseMixin(object):
     def render_to_response(self, context):
@@ -56,5 +56,6 @@ class CreateView(BaseCreateView):
                 purchaser = Purchaser.objects.get(pk=purchaser_id)
                 initial.update({'purchaser': purchaser})
             if quantity or balance:
-                initial.update({'delta_quantity': quantity, 'delta_balance': balance})
+                initial.update({'delta_quantity': quantity,
+                                'delta_balance': balance})
         return initial
