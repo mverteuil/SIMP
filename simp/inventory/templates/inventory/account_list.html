@@ -1,7 +1,8 @@
 {% extends "bootstrap/list.html" %}
+{% load i18n %}
 {% block thead %}
-<th>Name</th>
-<th>Balance</th>
+<th>{% trans "Name" %}</th>
+<th>{% trans "Balance" %}</th>
 <th>&nbsp;</th>
 {% endblock %}
 {% block each_tr %}

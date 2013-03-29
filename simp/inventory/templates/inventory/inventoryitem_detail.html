@@ -5,11 +5,11 @@
 {% with inventoryitem as item %}
 <div class="row">
     <div class="span6">
-        <h3>Transaction Shortcuts</h3>
+        <h3>{% trans "Transaction Shortcuts" %}</h3>
         {{ item|render_markup_scheme|safe }}
     </div>
     <div class="span6">
-        <h4>Acquisition Dates</h3>
+        <h4>{% trans "Acquisition Dates" %}</h3>
         <ul>
             {% for a_date in item.acquired %}
                 <li>{{ a_date }}</li>
@@ -23,10 +23,10 @@
 <div class="row">
     <table class="table span8">
     <tr>
-        <th class="span2">Purchase Value</th>
-        <th class="span2">Potential Value</th>
-        <th class="span2">Recovered Value</th>
-        <th class="span2">Profit</th>
+        <th class="span2">{% trans "Purchase Value" %}</th>
+        <th class="span2">{% trans "Potential Value" %}</th>
+        <th class="span2">{% trans "Recovered Value" %}</th>
+        <th class="span2">{% trans "Profit" %}</th>
     </tr>
     <tr>
         <td>${{ item.purchase_price|floatformat:2 }}</td>
@@ -37,10 +37,10 @@
 </table>
 <table class="table span8 table-bordered">
     <tr>
-        <th rowspan="2" class="span2">Quantity</th>
-        <th class="span2">Quantity Acquired</th>
-        <th class="span2">Quantity Sold</th>
-        <th class="span2">Quantity Remaining</th>
+        <th rowspan="2" class="span2">{% trans "Quantity" %}</th>
+        <th class="span2">{% trans "Quantity Acquired" %}</th>
+        <th class="span2">{% trans "Quantity Sold" %}</th>
+        <th class="span2">{% trans "Quantity Remaining" %}</th>
     </tr>
     <tr>
         <td>{{ item.total_acquired }}</td>
@@ -48,10 +48,10 @@
         <td>{{ item.calculate_quantity }}</td>
     </tr>
     <tr>
-        <th rowspan="2">Shrink</th>
-        <th>Shrink</th>
-        <th>Shrink Cost</th>
-        <th>Shrink Potential</th>
+        <th rowspan="2">{% trans "Shrink" %}</th>
+        <th>{% trans "Shrink" %}</th>
+        <th>{% trans "Shrink Cost" %}</th>
+        <th>{% trans "Shrink Potential" %}</th>
     </tr>
     <tr>
         <td>{{ item.shrink_quantity }}</td>

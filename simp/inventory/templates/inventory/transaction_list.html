@@ -1,14 +1,15 @@
 {% extends "bootstrap/list.html" %}
+{% load i18n %}
 {% load simptags %}
 {% block thead %}
-<th>Timestamp</th>
-<th>Code</th>
-<th>Item</th>
-<th>Account</th>
-<th>Purchaser</th>
-<th>Delta Quantity</th>
-<th>Delta Balance</th>
-<th>Actions</th>
+<th>{% trans "Timestamp" %}</th>
+<th>{% trans "Code" %}</th>
+<th>{% trans "Item" %}</th>
+<th>{% trans "Account" %}</th>
+<th>{% trans "Purchaser" %}</th>
+<th>{% trans "Delta Quantity" %}</th>
+<th>{% trans "Delta Balance" %}</th>
+<th>{% trans "Actions" %}</th>
 {% endblock %}
 {% block each_tr %}
 <tr class="{{object.objection_code}}">
@@ -19,7 +20,7 @@
     <td><a href="{{ object.purchaser.get_absolute_url }}">{{ object.purchaser.name }}</a></td>
     <td class="number">{{ object.delta_quantity|floatformat:1 }}</td>
     <td class="number">{{ object.delta_balance|floatformat:2 }}</td>
-    <td><a class="label label-info" href="{% url "inventory:transaction_form" %}{{object|clone_transaction_querystring}}">Clone</a>
-    <a class="label label-important" href="{% url "inventory:transaction_delete" object.pk %}">Delete</a></td>
+    <td><a class="label label-info" href="{% url "inventory:transaction_form" %}{{object|clone_transaction_querystring}}">{% trans "Clone" %}</a>
+    <a class="label label-important" href="{% url "inventory:transaction_delete" object.pk %}">{% trans "Delete" %}</a></td>
 </tr>
 {% endblock %}

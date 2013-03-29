@@ -1,11 +1,12 @@
 {% extends "bootstrap/bootstrap_base.html" %}
+{% load i18n %}
 {% block bootstrap_css %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
 {% endblock %}
 {% block brand %}SIMP{% endblock%}
 {% block nav_items %}
-<li class="{% if section == "account" %}current{%endif%}"><a href="{% url "inventory:account_list" %}">Accounts</a></li>
-<li class="{% if section == "inventoryitem" %}current{%endif%}"><a href="{% url "inventory:inventoryitem_list" %}">Items</a></li>
-<li class="{% if section == "purchaser" %}current{%endif%}"><a href="{% url "inventory:purchaser_list" %}">Purchasers</a></li>
-<li class="{% if section == "transaction" %}current{%endif%}"><a href="{% url "inventory:transaction_list" %}">Transactions</a></li>
+<li class="{% if section == "account" %}current{%endif%}"><a href="{% url "inventory:account_list" %}">{% trans "Accounts" %}</a></li>
+<li class="{% if section == "inventoryitem" %}current{%endif%}"><a href="{% url "inventory:inventoryitem_list" %}">{% trans "Items" %}</a></li>
+<li class="{% if section == "purchaser" %}current{%endif%}"><a href="{% url "inventory:purchaser_list" %}">{% trans "Purchasers" %}</a></li>
+<li class="{% if section == "transaction" %}current{%endif%}"><a href="{% url "inventory:transaction_list" %}">{% trans "Transactions" %}</a></li>
 {% endblock %}

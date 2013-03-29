@@ -2,19 +2,19 @@
 {% load i18n %}
 {% load simptags %}
 {% block button_bar %}
-<a class="btn" href="{% url "inventory:transaction_form" %}{{object|clone_transaction_querystring}}">Clone</a>
+<a class="btn" href="{% url "inventory:transaction_form" %}{{object|clone_transaction_querystring}}">{% trans "Clone" %}</a>
 {{ block.super }}
 {% endblock %}
 {% block content %}
 <table class="table">
     <tr>
-        <th>Timestamp</th>
-        <th>Code</th>
-        <th>Item</th>
-        <th>Account</th>
-        <th>Purchaser</th>
-        <th>Delta Quantity</th>
-        <th>Delta Balance</th>
+        <th>{% trans "Timestamp" %}</th>
+        <th>{% trans "Code" %}</th>
+        <th>{% trans "Item" %}</th>
+        <th>{% trans "Account" %}</th>
+        <th>{% trans "Purchaser" %}</th>
+        <th>{% trans "Delta Quantity" %}</th>
+        <th>{% trans "Delta Balance" %}</th>
     </tr>
     <tr class="{{transaction.transaction_code}}">
         <td>{{ transaction.timestamp }}</td>
