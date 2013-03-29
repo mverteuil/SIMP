@@ -1,5 +1,6 @@
 {% extends "bootstrap/detail.html" %}
 {% load i18n %}
+{% load simptags %}
 {% block content %}
 <table class="table">
     <tr>
@@ -10,5 +11,21 @@
         <td>{{ account.name }}</td>
         <td>${{ account.calculate_balance|floatformat:2 }}</td>
     </tr>
+</table>
+<h2>{% trans "Related Transactions" %}</h2>
+<table class="table">
+    {% for transaction in account.transactions.all %}
+    <tr class="{{transaction.transactionion_code}}">
+        <td><a href="{{ transaction.get_absolute_url }}">{{ transaction.timestamp }}</a></td>
+        <td>{{ transaction.transaction_code }}</td>
+        <td><a href="{{ transaction.item.get_absolute_url }}">{{ transaction.item.name }}</a></td>
+        <td><a href="{{ transaction.account.get_absolute_url }}">{{ transaction.account.name }}</a></td>
+        <td><a href="{{ transaction.purchaser.get_absolute_url }}">{{ transaction.purchaser.name }}</a></td>
+        <td class="number">{{ transaction.delta_quantity|floatformat:1 }}</td>
+        <td class="number">{{ transaction.delta_balance|floatformat:2 }}</td>
+        <td><a class="label label-info" href="{% url "inventory:transaction_form" %}{{transaction|clone_transaction_querystring}}">Clone</a>
+        <a class="label label-important" href="{% url "inventory:transaction_delete" transaction.pk %}">Delete</a></td>
+    </tr>
+    {% endfor %}
 </table>
 {% endblock content %}
