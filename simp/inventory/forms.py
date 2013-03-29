@@ -4,23 +4,23 @@
 
     .. moduleauthor:: Matthew de Verteuil <mverteuil@github.com>
 """
-from django.forms import ModelForm
+from django import forms
 
-from simp.inventory.models import Account
-from simp.inventory.models import InventoryItem
-from simp.inventory.models import Purchaser
-from simp.inventory.models import Transaction
+from .models import (Account,
+                     InventoryItem,
+                     Purchaser,
+                     Transaction)
 
 
-class AccountForm(ModelForm):
+class AccountForm(forms.ModelForm):
     """
-        Helper for creating and updating :class:`simp.inventory.models.Account`
+        Helper for creating and updating :class:`.models.Account`
     """
     class Meta:
         model = Account
 
 
-class InventoryItemForm(ModelForm):
+class InventoryItemForm(forms.ModelForm):
     """
         Helper for creating and updating
         :class:`simp.inventory.models.InventoryItem`
@@ -29,17 +29,26 @@ class InventoryItemForm(ModelForm):
         model = InventoryItem
 
 
-class PurchaserForm(ModelForm):
+class PurchaserForm(forms.ModelForm):
     """
-        Helper for creating and updating :class:`simp.inventory.models.Purchaser`
+        Helper for creating and updating :class:`.models.Purchaser`
     """
     class Meta:
         model = Purchaser
 
 
-class TransactionForm(ModelForm):
+class TransactionForm(forms.ModelForm):
     """
-        Helper for creating and updating :class:`simp.inventory.models.Transaction`
+        Helper for creating and updating :class:`.models.Transaction`
     """
     class Meta:
         model = Transaction
+    item = forms.ModelChoiceField(required=True,
+                                  queryset=InventoryItem.objects.exclude(
+                                      archived=True))
+    account = forms.ModelChoiceField(required=True,
+                                     queryset=Account.objects.exclude(
+                                         archived=True))
+    purchaser = forms.ModelChoiceField(required=True,
+                                       queryset=Purchaser.objects.exclude(
+                                           archived=True))

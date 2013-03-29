@@ -13,7 +13,19 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 
-class InventoryItem(models.Model):
+class Archivable(models.Model):
+    """
+        Allows a model to be "archived", meaning it is hidden from standard
+        queries and views. In this way, no rows of data are actually ever lost,
+        and can be restored in the future.
+    """
+    archived = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+
+class InventoryItem(Archivable):
     """
         Represents a specific inventory item. For example, an fruit store would
         probably have entries for "Banana", "Apple", "Grapefruit", etc.
@@ -297,7 +309,7 @@ class InventoryItem(models.Model):
         return ",".join(list(generate_tiers()))
 
 
-class Account(models.Model):
+class Account(Archivable):
     """
         Represents a 'wallet', so to speak. A pool of money used to purchase
         supplies and receive income. Generally speaking you will probably have
@@ -348,7 +360,7 @@ class Account(models.Model):
         return self.initial_balance + balance
 
 
-class Transaction(models.Model):
+class Transaction(Archivable):
     """
         Represents a transaction and tracks the changes in quantities and
         balance over time, storing the name of the purchaser too, if this is an
@@ -418,7 +430,7 @@ class Transaction(models.Model):
                                               self.delta_balance)
 
 
-class Purchaser(models.Model):
+class Purchaser(Archivable):
     """
         Represents a buyer or seller in transactions.
 
