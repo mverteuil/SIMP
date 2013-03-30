@@ -3,6 +3,10 @@
 {% block bootstrap_css %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
 {% endblock %}
+{% block jquery_js %}
+<script src="{{ STATIC_URL }}js/jquery-1.9.0.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+{% endblock %}
 {% block brand %}SIMP{% endblock%}
 {% block nav_items %}
 <li class="{% if section == "account" %}current{%endif%}"><a href="{% url "inventory:account_list" %}">{% trans "Accounts" %}</a></li>
