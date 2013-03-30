@@ -13,4 +13,10 @@
 <li class="{% if section == "inventoryitem" %}current{%endif%}"><a href="{% url "inventory:inventoryitem_list" %}">{% trans "Items" %}</a></li>
 <li class="{% if section == "purchaser" %}current{%endif%}"><a href="{% url "inventory:purchaser_list" %}">{% trans "Purchasers" %}</a></li>
 <li class="{% if section == "transaction" %}current{%endif%}"><a href="{% url "inventory:transaction_list" %}">{% trans "Transactions" %}</a></li>
+{% block messages %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert fade in{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
