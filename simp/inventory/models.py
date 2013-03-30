@@ -468,8 +468,7 @@ class Purchaser(Archivable):
                 was the buyer
         """
         return sum([t.delta_balance for t in
-                    Transaction.objects.filter(purchaser=self)
-                    if t.delta_balance > 0])
+                    self.transactions.filter(delta_balance__gt=0)])
 
     def calculate_expenses(self):
         """
@@ -482,8 +481,7 @@ class Purchaser(Archivable):
                 was the seller
         """
         return sum([t.delta_balance for t in
-                    Transaction.objects.filter(purchaser=self)
-                    if t.delta_balance < 0])
+                    self.transactions.filter(delta_balance__lt=0)])
 
     def calculate_consumption(self):
         """
@@ -496,8 +494,7 @@ class Purchaser(Archivable):
                 was the buyer
         """
         return abs(sum([t.delta_quantity for t in
-                        Transaction.objects.filter(purchaser=self)
-                        if t.delta_quantity < 0]))
+                        self.transactions.filter(delta_quantity__lt=0)]))
 
     def calculate_accumulation(self):
         """
@@ -510,5 +507,4 @@ class Purchaser(Archivable):
                 was the seller
         """
         return abs(sum([t.delta_quantity for t in
-                        Transaction.objects.filter(purchaser=self)
-                        if t.delta_quantity > 0]))
+                        self.transactions.filter(delta_quantity__gt=0)]))
