@@ -9,10 +9,18 @@
 {% endblock %}
 {% block brand %}SIMP{% endblock%}
 {% block nav_items %}
-<li class="{% if section == "account" %}current{%endif%}"><a href="{% url "inventory:account_list" %}">{% trans "Accounts" %}</a></li>
-<li class="{% if section == "inventoryitem" %}current{%endif%}"><a href="{% url "inventory:inventoryitem_list" %}">{% trans "Items" %}</a></li>
-<li class="{% if section == "purchaser" %}current{%endif%}"><a href="{% url "inventory:purchaser_list" %}">{% trans "Purchasers" %}</a></li>
-<li class="{% if section == "transaction" %}current{%endif%}"><a href="{% url "inventory:transaction_list" %}">{% trans "Transactions" %}</a></li>
+<li class="{% if section == "account" %}active{%endif%}"><a href="{% url "inventory:account_list" %}">{% trans "Accounts" %}</a></li>
+<li class="{% if section == "item" %}active{%endif%}"><a href="{% url "inventory:inventoryitem_list" %}">{% trans "Items" %}</a></li>
+<li class="dropdown{% if section == "purchaser" %} active{%endif%}">
+<a id="dPurchasers" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">{% trans "Purchasers" %} <b class="caret"></b></a>
+<ul class="dropdown-menu" role="menu" aria-labelledby="dPurchasers">
+    <li role="presentation"><a href="{% url "inventory:purchaser_list" %}" role="menuitem">{% trans "Everyone" %}</a></li>
+    <li role="presentation"><a href="{% url "inventory:purchaser_list" %}?group_by=buyer" role="menuitem">{% trans "Buyers" %}</a></li>
+    <li role="presentation"><a href="{% url "inventory:purchaser_list" %}?group_by=seller" role="menuitem">{% trans "Sellers" %}</a></li>
+</ul>
+</li>
+<li class="{% if section == "transaction" %}active{%endif%}"><a href="{% url "inventory:transaction_list" %}">{% trans "Transactions" %}</a></li>
+{% endblock %}
 {% block messages %}
     {% if messages %}
         {% for message in messages %}

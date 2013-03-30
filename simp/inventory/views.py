@@ -6,7 +6,8 @@
 """
 import json
 
-from bootstrap.views import CreateView as BaseCreateView
+from bootstrap.views import (CreateView as BaseCreateView,
+                             ListView as BaseListView)
 
 from django.http import HttpResponse
 from django.views.generic.detail import BaseDetailView
@@ -59,3 +60,16 @@ class CreateView(BaseCreateView):
                 initial.update({'delta_quantity': quantity,
                                 'delta_balance': balance})
         return initial
+
+
+class PurchaserListView(BaseListView):
+    def get_queryset(self):
+        group_by = self.request.GET.get('group_by')
+        if group_by:
+            if group_by == "buyer":
+                return Purchaser.objects.filter(
+                    transactions__delta_balance__gt=0).distinct()
+            elif group_by == "seller":
+                return Purchaser.objects.filter(
+                    transactions__delta_balance__lt=0).distinct()
+        return Purchaser.objects.all()
