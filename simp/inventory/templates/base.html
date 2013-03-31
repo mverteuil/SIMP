@@ -21,10 +21,3 @@
 </li>
 <li class="{% if section == "transaction" %}active{%endif%}"><a href="{% url "inventory:transaction_list" %}">{% trans "Transactions" %}</a></li>
 {% endblock %}
-{% block messages %}
-    {% if messages %}
-        {% for message in messages %}
-        <div class="alert fade in{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
-{% endblock %}
