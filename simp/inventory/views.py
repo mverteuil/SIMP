@@ -67,13 +67,13 @@ class ItemListView(BaseListView):
         """ Sort the queryset by decreasing quantities """
         quantity_q = InventoryItem.objects.extra(
             select={
-                'quantity': ("SELECT SUM(delta_quantity) FROM "
-                             "inventory_transaction WHERE "
+                'quantity': ("SELECT SUM(inventory_transaction.delta_quantity) "
+                             "FROM inventory_transaction WHERE "
                              "inventory_transaction.item_id = "
                              "inventory_inventoryitem.id")
             }
         )
-        quantity_q.extra(order_by="-quantity")
+        quantity_q = quantity_q.order_by("-quantity")
         return quantity_q
 
 
