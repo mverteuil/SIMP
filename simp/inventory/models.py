@@ -393,6 +393,10 @@ class Transaction(Archivable):
                                   blank=True)
     delta_quantity = models.FloatField(verbose_name="Delta Quantity",
                                        default=0.0)
+    delta_quantity = models.DecimalField(verbose_name="Delta Quantity",
+                                         max_digits=16,
+                                         decimal_places=2,
+                                         default=D('0.0'))
     delta_balance = models.DecimalField(verbose_name="Delta Balance",
                                         max_digits=8,
                                         decimal_places=2,
