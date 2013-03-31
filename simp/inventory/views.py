@@ -62,6 +62,21 @@ class CreateView(BaseCreateView):
         return initial
 
 
+class ItemListView(BaseListView):
+    def get_queryset(self):
+        """ Sort the queryset by decreasing quantities """
+        quantity_q = InventoryItem.objects.extra(
+            select={
+                'quantity': ("SELECT SUM(delta_quantity) FROM "
+                             "inventory_transaction WHERE "
+                             "inventory_transaction.item_id = "
+                             "inventory_inventoryitem.id")
+            }
+        )
+        quantity_q.extra(order_by="-quantity")
+        return quantity_q
+
+
 class PurchaserListView(BaseListView):
     def get_queryset(self):
         group_by = self.request.GET.get('group_by')
