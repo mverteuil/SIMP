@@ -167,10 +167,19 @@ class InventoryItem(Archivable):
 
             Returns
             -------
-            potential : :class:`decimal.Decimal`
-                The amount this item is potentially worth, given its history
+            potential : :class:`list`
+                The amount this item is potentially worth, given its markup
+                scheme and the various configurations of these prices it
+                may be sold in
         """
-        return D(self.total_acquired) * self.sold_value_per_unit
+        markup_list = self.__markup_scheme()
+        potentials = [D(self.total_acquired) *
+                      (D(t.split('@')[1]) / D(t.split('@')[0]))
+                      for t in markup_list
+                      if D(t.split('@')[0]) > 0 and
+                      D(t.split('@')[1]) > 0]  # Protect against /0
+        potentials += [D(self.total_acquired) * D(self.purchased_value_per_unit)]
+        return sorted(set(potentials))
 
     @cached_property
     def shrink_at_cost(self):
@@ -295,6 +304,18 @@ class InventoryItem(Archivable):
         return abs(sum(t.delta_quantity for t in
                        self.transactions.filter(delta_balance=0)))
 
+    def __markup_scheme(self):
+        def generate_tiers():
+            t = self.total_acquired
+            p = sum((abs(t.delta_balance) for t in self.inbound_transactions))
+            while t > 1:
+                t = t / self.markup_decay
+                p = (p / self.markup_decay) * D(self.markup_growth)
+                r = D(int(p) / float(self.markup_nearest))
+                r = D((ceil(r) if r % p > 1 else r)) * D(self.markup_nearest)
+                yield "%.1f@%.2f" % (t, r)
+        return list(generate_tiers())
+
     @cached_property
     def markup_scheme(self):
         """
@@ -305,16 +326,7 @@ class InventoryItem(Archivable):
             markup_scheme : `string`
                 e.g. 1@15,3@35,7@80,...
         """
-        def generate_tiers():
-            t = self.total_acquired
-            p = sum((abs(t.delta_balance) for t in self.inbound_transactions))
-            while t > 1:
-                t = t / self.markup_decay
-                p = (p / self.markup_decay) * D(self.markup_growth)
-                r = D(int(p) / float(self.markup_nearest))
-                r = D((ceil(r) if r % p > 1 else r)) * D(self.markup_nearest)
-                yield "%.1f@%.2f" % (t, r)
-        return ",".join(list(generate_tiers()))
+        return ",".join(self.__markup_scheme())
 
 
 class Account(Archivable):

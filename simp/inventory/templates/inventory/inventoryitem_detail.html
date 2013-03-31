@@ -1,14 +1,31 @@
 {% extends "bootstrap/detail.html" %}
 {% load i18n %}
 {% load simptags %}
+{% block head %}
+<script src="{{ STATIC_URL }}js/raphael-min.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/raphael.donut.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function(){
+    Raphael("donutchart", 150, 150).donutChart(
+            75, 75, 50, 20,
+            [{{ object.quantity }}, {{ object.total_sold }}, {{ object.shrink_quantity }}],
+            ['','',''],
+            "#fff");
+});
+</script>
+{% endblock %}
+{% block page_header %}
+<h1>{{ name }}</h1>
+{% endblock %}
 {% block content %}
 {% with inventoryitem as item %}
 <div class="row">
-    <div class="span6">
+    <div class="span4">
         <h3>{% trans "Transaction Shortcuts" %}</h3>
         {{ item|render_markup_scheme|safe }}
     </div>
-    <div class="span6">
+    <div class="span2" id="donutchart"></div>
+    <div class="span3">
         <h4>{% trans "Acquisition Dates" %}</h3>
         <ul>
             {% for a_date in item.acquired %}
@@ -30,7 +47,7 @@
     </tr>
     <tr>
         <td>${{ item.purchase_price|floatformat:2 }}</td>
-        <td>${{ item.potential_value|floatformat:-2}}</td>
+        <td>${{ item|simple_potentials }}</td>
         <td>${{ item.total_recovered|floatformat:2 }}</td>
         <td>${{ item.profit|floatformat:2 }}</td>
     </tr>
@@ -60,5 +77,20 @@
     </tr>
 </table>
 </div>
+<h3>{% trans "Related Transactions" %}</h3>
+<table class="table table-compact">
+    {% for transaction in item.transactions.all %}
+    <tr class="{{transaction.transaction_code}}">
+        <td><a href="{{ transaction.get_absolute_url }}">{{ transaction.timestamp }}</a></td>
+        <td>{{ transaction.transaction_code }}</td>
+        <td><a href="{{ transaction.account.get_absolute_url }}">{{ transaction.account.name }}</a></td>
+        <td><a href="{{ transaction.purchaser.get_absolute_url }}">{{ transaction.purchaser.name }}</a></td>
+        <td class="number">{{ transaction.delta_quantity|floatformat:1 }}</td>
+        <td class="number">{{ transaction.delta_balance|floatformat:2 }}</td>
+        <td><a class="label label-info" href="{% url "inventory:transaction_form" %}{{transaction|clone_transaction_querystring}}">Clone</a>
+        <a class="label label-important" href="{% url "inventory:transaction_delete" transaction.pk %}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
 {% endwith %}
 {% endblock content %}

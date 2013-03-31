@@ -35,6 +35,12 @@ def render_markup_scheme(item):
 
 
 @register.filter
+def simple_potentials(item):
+    """ Formats the potential sale values for easy reading """
+    return "%.2f-%.2f" % (item.potential_value[0], item.potential_value[-1])
+
+
+@register.filter
 def clone_transaction_querystring(transaction):
     """
         Returns the query string for adding a new transaction with properties

@@ -32,14 +32,14 @@ class BasicSetup(object):
             account=self.account,
             purchaser=self.seller,
             delta_quantity=50,
-            delta_balance=D("-25.00"),
+            delta_balance=D("-250.00"),
         )
         self.sell_transaction = Transaction.objects.create(
             item=self.item,
             account=self.account,
             purchaser=self.buyer,
             delta_quantity=-50,
-            delta_balance=D("50.00"),
+            delta_balance=D("500.00"),
         )
 
     def tearDown(self):
@@ -55,7 +55,7 @@ class AccountTest(BasicSetup, TestCase):
 
     def test_calculated_balance(self):
         """ Should calculate balance equal to the sum of transactions """
-        assert self.account.balance == D("125.00")
+        assert self.account.balance == D("350.00")
 
 
 class InventoryItemTest(BasicSetup, TestCase):
@@ -73,7 +73,7 @@ class InventoryItemTest(BasicSetup, TestCase):
         assert self.item.quantity == 0
 
     def test_calculated_purchased_value_per_unit(self):
-        assert self.item.purchased_value_per_unit == 0.5
+        assert self.item.purchased_value_per_unit == 5
         Transaction.objects.create(
             item=self.item,
             account=self.account,
@@ -88,7 +88,7 @@ class InventoryItemTest(BasicSetup, TestCase):
         assert self.item.purchased_value_per_unit == total
 
     def test_calculated_sold_value_per_unit(self):
-        assert self.item.sold_value_per_unit == 1
+        assert self.item.sold_value_per_unit == 10
         # No more inventory, buy some more
         Transaction.objects.create(
             item=self.item,
@@ -144,18 +144,25 @@ class InventoryItemTest(BasicSetup, TestCase):
                     self.item.transactions.filter(delta_balance=0)))
         assert self.item.shrink_quantity == total
 
-    def test_potential_value(self):
+    def test_minimum_potential_value(self):
         """
-            Should calculate potential with the product of sold vpu
-            and total acquired
+            Should calculate potential with the product of sold vpu and total
+            acquired
         """
-        potential = self.item.sold_value_per_unit
+        potential = self.item.purchased_value_per_unit
         potential *= D(self.item.total_acquired)
-        assert self.item.potential_value == potential
+        assert self.item.potential_value[0] == potential
+
+    def test_maximum_potential_value(self):
+        markup_scheme = [D(t.split('@')[1]) / D(t.split('@')[0])
+                         for t in self.item.markup_scheme.split(',')
+                         if D(t.split('@')[0]) > 0 and D(t.split('@')[1]) > 0]
+        potential = sorted(set(markup_scheme))[-1] * self.item.total_acquired
+        assert self.item.potential_value[-1] == potential
 
     def test_purchase_price(self):
         """ Should calculate own purchase price """
-        purchase_price = D(25)
+        purchase_price = D(250)
         assert self.item.purchase_price == purchase_price
 
     def test_shrink_costs(self):
@@ -234,10 +241,10 @@ class InventoryItemTest(BasicSetup, TestCase):
 class PurchaserTest(BasicSetup, TestCase):
     def test_calculated_income(self):
         assert self.seller.income == 0
-        assert self.buyer.income == 50
+        assert self.buyer.income == 500
 
     def test_calculated_expenses(self):
-        assert self.seller.expenses == -25
+        assert self.seller.expenses == -250
         assert self.buyer.expenses == 0
 
     def test_calculated_consumption(self):
