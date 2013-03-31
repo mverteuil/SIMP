@@ -8,7 +8,7 @@
 {% block each_tr %}
 <tr>
     <td><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></td>
-    <td>{{ object.calculate_balance|floatformat:2 }}</td>
+    <td>{{ object.balance|floatformat:2 }}</td>
     <td><a class="label label-important" href="{% url "inventory:account_delete" object.pk %}">{% trans "Delete" %}</a></td>
 </tr>
 {% endblock %}

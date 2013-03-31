@@ -12,10 +12,10 @@
     </tr>
     <tr>
         <td>{{ purchaser.name }}</td>
-        <td class="number">{{ object.calculate_consumption|floatformat:1 }}</td>
-        <td class="number">{{ object.calculate_income|floatformat:2 }}</td>
-        <td class="number">{{ object.calculate_accumulation|floatformat:1 }}</td>
-        <td class="number">{{ object.calculate_expenses|floatformat:2 }}</td>
+        <td class="number">{{ object.consumption|floatformat:1 }}</td>
+        <td class="number">{{ object.income|floatformat:2 }}</td>
+        <td class="number">{{ object.accumulation|floatformat:1 }}</td>
+        <td class="number">{{ object.expenses|floatformat:2 }}</td>
     </tr>
 </table>
 <h2>{% trans "Related Transactions" %}</h2>

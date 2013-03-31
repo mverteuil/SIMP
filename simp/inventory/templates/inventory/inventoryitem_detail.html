@@ -30,9 +30,9 @@
     </tr>
     <tr>
         <td>${{ item.purchase_price|floatformat:2 }}</td>
-        <td>${{ item.calculate_potential_value|floatformat:-2}}</td>
+        <td>${{ item.potential_value|floatformat:-2}}</td>
         <td>${{ item.total_recovered|floatformat:2 }}</td>
-        <td>${{ item.calculate_profit|floatformat:2 }}</td>
+        <td>${{ item.profit|floatformat:2 }}</td>
     </tr>
 </table>
 <table class="table span8 table-bordered">
@@ -45,7 +45,7 @@
     <tr>
         <td>{{ item.total_acquired }}</td>
         <td>{{ item.total_sold }}</td>
-        <td>{{ item.calculate_quantity }}</td>
+        <td>{{ item.quantity }}</td>
     </tr>
     <tr>
         <th rowspan="2">{% trans "Shrink" %}</th>
@@ -55,8 +55,8 @@
     </tr>
     <tr>
         <td>{{ item.shrink_quantity }}</td>
-        <td>${{ item.calculate_shrink_at_cost|floatformat:0 }}</td>
-        <td>${{ item.calculate_shrink_at_potential|floatformat:0 }}</td>
+        <td>${{ item.shrink_at_cost|floatformat:0 }}</td>
+        <td>${{ item.shrink_at_potential|floatformat:0 }}</td>
     </tr>
 </table>
 </div>

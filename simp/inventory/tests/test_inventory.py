@@ -55,7 +55,7 @@ class AccountTest(BasicSetup, TestCase):
 
     def test_calculated_balance(self):
         """ Should calculate balance equal to the sum of transactions """
-        assert self.account.calculate_balance() == D("125.00")
+        assert self.account.balance == D("125.00")
 
 
 class InventoryItemTest(BasicSetup, TestCase):
@@ -70,10 +70,10 @@ class InventoryItemTest(BasicSetup, TestCase):
 
     def test_calculated_quantity(self):
         """ Should provide quantity as sum of transactions """
-        assert self.item.calculate_quantity() == 0
+        assert self.item.quantity == 0
 
     def test_calculated_purchased_value_per_unit(self):
-        assert self.item.calculate_purchased_value_per_unit() == 0.5
+        assert self.item.purchased_value_per_unit == 0.5
         Transaction.objects.create(
             item=self.item,
             account=self.account,
@@ -81,13 +81,14 @@ class InventoryItemTest(BasicSetup, TestCase):
             delta_quantity=100,
             delta_balance=D("-75.00"),
         )
+        self.item = Item.objects.get(pk=self.item.pk)
         total = sum((abs(t.delta_balance)
                      for t in self.item.inbound_transactions))
         total /= D(self.item.total_acquired)
-        assert self.item.calculate_purchased_value_per_unit() == total
+        assert self.item.purchased_value_per_unit == total
 
     def test_calculated_sold_value_per_unit(self):
-        assert self.item.calculate_sold_value_per_unit() == 1
+        assert self.item.sold_value_per_unit == 1
         # No more inventory, buy some more
         Transaction.objects.create(
             item=self.item,
@@ -104,10 +105,11 @@ class InventoryItemTest(BasicSetup, TestCase):
             delta_quantity=(-60),
             delta_balance=D("75.00"),
         )
+        self.item = Item.objects.get(pk=self.item.pk)
         total = sum(abs(t.delta_balance)
                     for t in self.item.outbound_transactions)
         total /= D(self.item.total_sold)
-        assert self.item.calculate_sold_value_per_unit() == total
+        assert self.item.sold_value_per_unit == total
 
     def test_inbound_transactions(self):
         """ Should provide transactions filtered for inbound """
@@ -147,9 +149,9 @@ class InventoryItemTest(BasicSetup, TestCase):
             Should calculate potential with the product of sold vpu
             and total acquired
         """
-        potential = self.item.calculate_sold_value_per_unit()
+        potential = self.item.sold_value_per_unit
         potential *= D(self.item.total_acquired)
-        assert self.item.calculate_potential_value() == potential
+        assert self.item.potential_value == potential
 
     def test_purchase_price(self):
         """ Should calculate own purchase price """
@@ -158,11 +160,11 @@ class InventoryItemTest(BasicSetup, TestCase):
 
     def test_shrink_costs(self):
         """ Should calculate shrink costs """
-        at_cost = in_potential = D(self.item.shrink_quantity) 
-        at_cost *= self.item.calculate_purchased_value_per_unit()
-        in_potential *= self.item.calculate_sold_value_per_unit()
-        assert self.item.calculate_shrink_at_cost() == at_cost
-        assert self.item.calculate_shrink_at_potential() == at_cost
+        at_cost = in_potential = D(self.item.shrink_quantity)
+        at_cost *= self.item.purchased_value_per_unit
+        in_potential *= self.item.sold_value_per_unit
+        assert self.item.shrink_at_cost == at_cost
+        assert self.item.shrink_at_potential == at_cost
 
     def test_total_recovered(self):
         """ Should calculated costs recovered through sales """
@@ -172,7 +174,7 @@ class InventoryItemTest(BasicSetup, TestCase):
     def test_profit(self):
         """ Should calculate amount recovered that exceeds costs """
         profit = max(0, self.item.total_recovered - self.item.purchase_price)
-        assert self.item.calculate_profit() == profit
+        assert self.item.profit == profit
 
     def test_automatic_markup(self):
         """
@@ -203,6 +205,7 @@ class InventoryItemTest(BasicSetup, TestCase):
             delta_quantity=200,
             delta_balance=D(-2000),
         )
+        round_five = Item.objects.get(pk=round_five.pk)
         round_five = round_five.markup_scheme
         assert round_five
         round_five = round_five.split(',')
@@ -216,6 +219,7 @@ class InventoryItemTest(BasicSetup, TestCase):
         acquisition.item = round_ten
         acquisition.save()
 
+        round_ten = Item.objects.get(pk=round_ten.pk)
         round_ten = round_ten.markup_scheme
         assert round_ten
         round_ten = round_ten.split(',')
@@ -229,17 +233,17 @@ class InventoryItemTest(BasicSetup, TestCase):
 
 class PurchaserTest(BasicSetup, TestCase):
     def test_calculated_income(self):
-        assert self.seller.calculate_income() == 0
-        assert self.buyer.calculate_income() == 50
+        assert self.seller.income == 0
+        assert self.buyer.income == 50
 
     def test_calculated_expenses(self):
-        assert self.seller.calculate_expenses() == -25
-        assert self.buyer.calculate_expenses() == 0
+        assert self.seller.expenses == -25
+        assert self.buyer.expenses == 0
 
     def test_calculated_consumption(self):
-        assert self.seller.calculate_consumption() == 0
-        assert self.buyer.calculate_consumption() == 50
+        assert self.seller.consumption == 0
+        assert self.buyer.consumption == 50
 
     def test_calculated_accumulation(self):
-        assert self.seller.calculate_accumulation() == 50
-        assert self.buyer.calculate_accumulation() == 0
+        assert self.seller.accumulation == 50
+        assert self.buyer.accumulation == 0

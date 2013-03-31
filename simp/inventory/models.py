@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils.functional import cached_property
 
 
 class Archivable(models.Model):
@@ -90,7 +91,7 @@ class InventoryItem(Archivable):
     def __unicode__(self):
         return self.name
 
-    @property
+    @cached_property
     def acquired(self):
         """
             Find dates corresponding to inbound transactions
@@ -101,7 +102,8 @@ class InventoryItem(Archivable):
         """
         return [t.timestamp for t in self.inbound_transactions]
 
-    def calculate_quantity(self):
+    @cached_property
+    def quantity(self):
         """
             Calculates the current quantity by summing transactions
 
@@ -112,7 +114,8 @@ class InventoryItem(Archivable):
         """
         return max(0, sum(t.delta_quantity for t in self.transactions.all()))
 
-    def calculate_purchased_value_per_unit(self):
+    @cached_property
+    def purchased_value_per_unit(self):
         """
             Calculates the current determined value per unit based solely on
             the rates at which this item was acquired.
@@ -132,7 +135,8 @@ class InventoryItem(Archivable):
         total = sum((abs(t.delta_balance) for t in self.inbound_transactions))
         return total / D(max(self.total_acquired, 1))
 
-    def calculate_sold_value_per_unit(self):
+    @cached_property
+    def sold_value_per_unit(self):
         """
             Calculates the current determined value per unit based solely on
             the rates at which this item was sold.
@@ -153,7 +157,8 @@ class InventoryItem(Archivable):
         total = sum(abs(t.delta_balance) for t in self.outbound_transactions)
         return total / D(max(self.total_sold, 1))
 
-    def calculate_potential_value(self):
+    @cached_property
+    def potential_value(self):
         """
             Calculates the current potential value of this item.
 
@@ -165,9 +170,10 @@ class InventoryItem(Archivable):
             potential : :class:`decimal.Decimal`
                 The amount this item is potentially worth, given its history
         """
-        return D(self.total_acquired) * self.calculate_sold_value_per_unit()
+        return D(self.total_acquired) * self.sold_value_per_unit
 
-    def calculate_shrink_at_cost(self):
+    @cached_property
+    def shrink_at_cost(self):
         """
             Calculates the amount lost to shrink at cost.
 
@@ -177,9 +183,10 @@ class InventoryItem(Archivable):
                 The value lost to shrink if calculated at cost
         """
         return (D(self.shrink_quantity) *
-                self.calculate_purchased_value_per_unit())
+                self.purchased_value_per_unit)
 
-    def calculate_shrink_at_potential(self):
+    @cached_property
+    def shrink_at_potential(self):
         """
             Calculates the amount lost to shrink in potential sales.
 
@@ -188,9 +195,10 @@ class InventoryItem(Archivable):
             shrink_at_cost : :class:`decimal.Decimal`
                 The value lost to shrink in potential sales
         """
-        return D(self.shrink_quantity) * self.calculate_sold_value_per_unit()
+        return D(self.shrink_quantity) * self.sold_value_per_unit
 
-    def calculate_profit(self):
+    @cached_property
+    def profit(self):
         """
             Calculates amount recovered through sales that exceeds
             the purchase price
@@ -202,7 +210,7 @@ class InventoryItem(Archivable):
         """
         return max(0, self.total_recovered - self.purchase_price)
 
-    @property
+    @cached_property
     def inbound_transactions(self):
         """
             Transactions where the quantity is greater than zero.
@@ -214,7 +222,7 @@ class InventoryItem(Archivable):
         """
         return self.transactions.filter(delta_quantity__gt=0)
 
-    @property
+    @cached_property
     def outbound_transactions(self):
         """
             Transactions where the quantity is equal to or less than zero.
@@ -226,7 +234,7 @@ class InventoryItem(Archivable):
         """
         return self.transactions.filter(delta_quantity__lte=0)
 
-    @property
+    @cached_property
     def purchase_price(self):
         """
             Total value of this item at purchase.
@@ -238,7 +246,7 @@ class InventoryItem(Archivable):
         """
         return abs(sum(t.delta_balance for t in self.inbound_transactions))
 
-    @property
+    @cached_property
     def total_recovered(self):
         """
             Total value recovered through sales of this item
@@ -250,7 +258,7 @@ class InventoryItem(Archivable):
         """
         return sum(t.delta_balance for t in self.outbound_transactions)
 
-    @property
+    @cached_property
     def total_acquired(self):
         """
             Total number of units acquired over all time
@@ -262,7 +270,7 @@ class InventoryItem(Archivable):
         """
         return sum(t.delta_quantity for t in self.inbound_transactions)
 
-    @property
+    @cached_property
     def total_sold(self):
         """
             Total number of units sold over all time
@@ -274,7 +282,7 @@ class InventoryItem(Archivable):
         """
         return abs(sum(t.delta_quantity for t in self.outbound_transactions))
 
-    @property
+    @cached_property
     def shrink_quantity(self):
         """
             Total number of units 'lost' in NIL transactions
@@ -287,7 +295,7 @@ class InventoryItem(Archivable):
         return abs(sum(t.delta_quantity for t in
                        self.transactions.filter(delta_balance=0)))
 
-    @property
+    @cached_property
     def markup_scheme(self):
         """
             Rendered markup scheme
@@ -345,7 +353,8 @@ class Account(Archivable):
     def __unicode__(self):
         return self.name
 
-    def calculate_balance(self):
+    @cached_property
+    def balance(self):
         """
             Calculates the current balance by summing transactions with
             the initial balance.
@@ -391,8 +400,6 @@ class Transaction(Archivable):
                                   related_name="transactions",
                                   null=True,
                                   blank=True)
-    delta_quantity = models.FloatField(verbose_name="Delta Quantity",
-                                       default=0.0)
     delta_quantity = models.DecimalField(verbose_name="Delta Quantity",
                                          max_digits=16,
                                          decimal_places=2,
@@ -416,7 +423,7 @@ class Transaction(Archivable):
     def get_absolute_url(self):
         return reverse('inventory:transaction_detail', kwargs=dict(pk=self.pk))
 
-    @property
+    @cached_property
     def transaction_code(self):
         if self.delta_balance < 0:
             return "INB"
@@ -461,7 +468,8 @@ class Purchaser(Archivable):
     def __unicode__(self):
         return self.name
 
-    def calculate_income(self):
+    @cached_property
+    def income(self):
         """
             Sums the transaction balances where this purchaser was the buyer
 
@@ -474,7 +482,8 @@ class Purchaser(Archivable):
         return sum([t.delta_balance for t in
                     self.transactions.filter(delta_balance__gt=0)])
 
-    def calculate_expenses(self):
+    @cached_property
+    def expenses(self):
         """
             Sums the transaction balances where this purchaser was the seller
 
@@ -487,7 +496,8 @@ class Purchaser(Archivable):
         return sum([t.delta_balance for t in
                     self.transactions.filter(delta_balance__lt=0)])
 
-    def calculate_consumption(self):
+    @cached_property
+    def consumption(self):
         """
             Sums the transaction quantities where this purchaser was the buyer
 
@@ -500,7 +510,8 @@ class Purchaser(Archivable):
         return abs(sum([t.delta_quantity for t in
                         self.transactions.filter(delta_quantity__lt=0)]))
 
-    def calculate_accumulation(self):
+    @cached_property
+    def accumulation(self):
         """
             Sums the transaction quantities where this purchaser was the seller
 

@@ -11,9 +11,9 @@
 {% block each_tr %}
 <tr class="item" data-markup="{{ object.markup_scheme }}">
     <td><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></td>
-    <td class="number quantity">{{ object.calculate_quantity|floatformat:1 }}</td>
-    <td class="number purchased">${{ object.calculate_purchased_value_per_unit|floatformat:2 }}</td>
-    <td class="number sold">${{ object.calculate_sold_value_per_unit|floatformat:2 }}</td>
+    <td class="number quantity">{{ object.quantity|floatformat:1 }}</td>
+    <td class="number purchased">${{ object.purchased_value_per_unit|floatformat:2 }}</td>
+    <td class="number sold">${{ object.sold_value_per_unit|floatformat:2 }}</td>
     <td class="chart markup">&nbsp;</td>
     <td class="chart performance">&nbsp;</td>
 </tr>

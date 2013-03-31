@@ -10,21 +10,17 @@
 {% block each_tr %}
 <tr>
     <td><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></td>
-    {% with object.calculate_consumption as consumption %}
-    {% if consumption > 0 %}
-    <td class="number">{{ consumption|floatformat:1 }}</td>
-    <td class="number">{{ object.calculate_income|floatformat:2 }}</td>
+    {% if object.consumption > 0 %}
+    <td class="number">{{ object.consumption|floatformat:1 }}</td>
+    <td class="number">{{ object.income|floatformat:2 }}</td>
     {% else %}
     <td colspan="2">&nbsp;</td>
     {% endif %}
-    {% endwith %}
-    {% with object.calculate_accumulation as accumulation %}
-    {% if accumulation > 0 %}
-    <td class="number">{{ accumulation|floatformat:1 }}</td>
-    <td class="number">{{ object.calculate_expenses|floatformat:2 }}</td>
+    {% if object.accumulation > 0 %}
+    <td class="number">{{ object.accumulation|floatformat:1 }}</td>
+    <td class="number">{{ object.expenses|floatformat:2 }}</td>
     {% else %}
     <td colspan="2">&nbsp;</td>
     {% endif %}
-    {% endwith %}
 </tr>
 {% endblock %}
